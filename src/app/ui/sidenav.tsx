@@ -17,10 +17,10 @@ export default function SideNav() {
         </div>
       </Link>
       <div className="flex grow flex-row justify-between space-x-2 md:flex-col md:space-x-0 md:space-y-2">
-        <h3 className="bg-blue-200 p-3">工数情報</h3>
+        <h3 className="bg-blue-200 p-3 underline underline-offset-2">工数情報</h3>
         <WorkloadNavLinks />
         {/* <div className="hidden h-auto w-full grow rounded-md bg-gray-50 md:block"></div> */}
-        <h3 className="bg-blue-200 p-3">ユーザ情報</h3>
+        <h3 className="bg-blue-200 p-3 underline underline-offset-2">ユーザ情報</h3>
         <UserNavLinks />
         {/* <div className="hidden h-auto w-full grow rounded-md bg-gray-50 md:block"></div> */}
         <form>
