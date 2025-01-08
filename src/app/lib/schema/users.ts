@@ -38,3 +38,23 @@ export type SignUpFormState =
       message?: string
     }
   | undefined
+
+
+  export const LoginFormSchema = z.object({
+    email: z.string().email({ message: '有効なパスワードを入力してください。' }).trim(),
+    password: z
+      .string()
+      .min(6, { message: '6文字以上入力してください。' })
+      .trim(),
+  })
+
+
+  export type LoginFormState =
+  | {
+      errors?: {
+        email?: string[]
+        password?: string[]
+      }
+      message?: string
+    }
+  | undefined

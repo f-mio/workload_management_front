@@ -1,9 +1,11 @@
 "use client"
 
-import { signup } from '@/app/api/users'
 import { useState, useActionState } from 'react'
+import { signup } from '@/app/api/users'
+
 
 export function SignupForm() {
+  // stateの宣言
   const [state, action, pending] = useActionState(signup, undefined)
   const [formData, setFormData] = useState({
     family_name: '',
@@ -12,7 +14,7 @@ export function SignupForm() {
     email: '',
     password: ''
   })
-
+  // フォーム内容の変更時のハンドラ
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({
       ...prev,
@@ -26,7 +28,7 @@ export function SignupForm() {
         <div className="w-full flex flex-row pt-3 justify-center">
           <div className="flex flex-col">
             <label htmlFor="family_name">姓:</label>
-            <input 
+            <input
               id="family_name" 
               name="family_name" 
               placeholder="姓" 
@@ -38,7 +40,7 @@ export function SignupForm() {
           </div>
           <div className="flex flex-col ms-5">
             <label htmlFor="first_name">名:</label>
-            <input 
+            <input
               id="first_name" 
               name="first_name" 
               placeholder="名" 
@@ -52,7 +54,7 @@ export function SignupForm() {
         <div className="w-full flex flex-row pt-3 justify-center">
           <div className="flex flex-col">
             <label htmlFor="name">ユーザ名:</label>
-            <input 
+            <input
               id="name" 
               name="name" 
               placeholder="ユーザ名" 
@@ -64,7 +66,7 @@ export function SignupForm() {
           </div>
           <div className="flex flex-col ms-5">
             <label htmlFor="email">Email:</label>
-            <input 
+            <input
               id="email" 
               name="email" 
               type="email" 
@@ -79,7 +81,7 @@ export function SignupForm() {
         <div className="w-full flex flex-row pt-3 justify-center">
           <div className="flex flex-col pt-3">
             <label htmlFor="password">Password:</label>
-            <input 
+            <input
               id="password" 
               name="password" 
               type="password" 

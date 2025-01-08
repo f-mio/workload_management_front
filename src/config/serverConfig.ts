@@ -5,6 +5,7 @@ const apiServerInfo = {
   wlHost: process.env.WWORKLOAD_APP_API_SERVER!,
   // csrf token
   epCsrf: process.env.ENDPOINT_GET_CSRF!,
+  epVerifyJwt: process.env.ENDPOINT_VERIFY_JWT,
   // ユーザ管理機能用
   epLogin: process.env.ENDPOINT_USER_LOGIN!,
   epSignUp: process.env.ENDPOINT_USER_SIGNUP!,
