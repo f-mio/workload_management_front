@@ -1,13 +1,21 @@
 "use server"
 
+
 import axios from "axios";
 import { cookies } from "next/headers";
-import apiServerInfo from "@/config/serverConfig"
+import apiServerInfo from "@/config/serverConfig";
 import {
   SignupFormSchema, SignUpFormState,
-  LoginFormSchema, LoginFormState } from '@/app/lib/schema/users'
+  LoginFormSchema, LoginFormState } from '@/app/lib/schema/users';
+import { redirect } from "next/navigation";
 
 
+/**
+ * サインアップ用のメソッド
+ * @param state 
+ * @param formData 
+ * @returns 
+ */
 export async function signup(state: SignUpFormState, formData: FormData) {
   // 必要なデータのみを抽出
   const validatedFields = SignupFormSchema.safeParse({
@@ -27,18 +35,39 @@ export async function signup(state: SignUpFormState, formData: FormData) {
   // APIサーバへサインアップ処理を送信
   const endpoint = apiServerInfo["epSignUp"];
   const userData = validatedFields.data
-  const message = await axios.post(
+  const response = await axios.post(
       endpoint, userData,
       {withCredentials: true})
-    .then(function (response) {
-      return response.data;
-    })
     .catch(function (error) {
       console.log(error);
+      return null
     });
 
-  // [TODO] JWT Tokenの発行
-  return message
+  // エラーが発生した場合、nullなので早期リターン
+  if (response === null) { return null };
+
+  // FastAPIからのCookieをブラウザに転送
+  const cookieStore = await cookies();
+  // Set-Cookieヘッダーからトークンを抽出
+  const setCookiesList = response.headers?.["set-cookie"];
+  if (setCookiesList) {
+    const setCookiesStr = setCookiesList.join();
+    // Bearer tokenの部分を抽出
+    const tokenMatch = setCookiesStr.match(/Bearer\s+([^"]+)/);
+    if (tokenMatch && tokenMatch[1]) {
+      const access_token = `"Bearer ${tokenMatch[1]}"`;
+      cookieStore.set({
+        name: "access_token",
+        value: access_token,
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        path: "/"
+      });
+      redirect("/")
+    }
+  }
+  return null;
 }
 
 
@@ -77,20 +106,18 @@ export async function login(state: LoginFormState, formData: FormData) {
   );
 
   // FastAPIからのCookieをブラウザに転送
-  const cookieStore = await cookies();
-  
+  const cookieStore = await cookies();  
   // Set-Cookieヘッダーからトークンを抽出
-  const setCookieHeader = response.headers["set-cookie"]?.[0];
-  if (setCookieHeader) {
+  const setCookiesList = response.headers?.["set-cookie"];
+  if (setCookiesList) {
+    const setCookiesStr = setCookiesList.join();
     // Bearer tokenの部分を抽出
-    const tokenMatch = setCookieHeader.match(/Bearer\s+([^"]+)/);
+    const tokenMatch = setCookiesStr.match(/Bearer\s+([^"]+)/);
     if (tokenMatch && tokenMatch[1]) {
-      // const token = `"Bearer ${tokenMatch[1]}"`;
-      const token = `"Bearer ${tokenMatch[1]}"`;
-
+      const access_token = `"Bearer ${tokenMatch[1]}"`;
       cookieStore.set({
         name: "access_token",
-        value: token,
+        value: access_token,
         httpOnly: true,
         secure: true,
         sameSite: "none",
@@ -98,6 +125,14 @@ export async function login(state: LoginFormState, formData: FormData) {
       });
     }
   }
-
   return response.data;
+}
+
+
+/**
+ * ログイン用メソッド
+ */
+export async function logout() {
+  const cookieStore = await cookies()
+  cookieStore.delete('access_token')
 }
