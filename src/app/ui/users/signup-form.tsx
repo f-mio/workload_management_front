@@ -8,11 +8,11 @@ export function SignupForm() {
   // stateの宣言
   const [state, action, pending] = useActionState(signup, undefined)
   const [formData, setFormData] = useState({
-    family_name: '',
-    first_name: '',
-    name: '',
-    email: '',
-    password: ''
+    family_name: "",
+    first_name: "",
+    name: "",
+    email: "",
+    password: ""
   })
   // フォーム内容の変更時のハンドラ
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,7 +21,7 @@ export function SignupForm() {
       [e.target.name]: e.target.value
     }))
   }
- 
+
   return (
     <form action={action}>
       <div className="w-full flex flex-col items-center justify-center border-4 border-sky-200 pt-4">
