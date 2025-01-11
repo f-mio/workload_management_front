@@ -102,8 +102,21 @@ export async function login(state: LoginFormState, formData: FormData) {
       headers: {
         'Content-Type': 'application/json',
       }
-    }
-  );
+    })
+    .then(function (response) {
+      return response
+    })
+    .catch(function (error) {
+      return error
+    });
+
+  if (response.status >= 300) {
+    const errorMsg = response?.response?.data?.message
+    return  {
+        errors: {apiMessage: `${errorMsg}`},
+      };
+  }
+
 
   // FastAPIからのCookieをブラウザに転送
   const cookieStore = await cookies();  
@@ -125,7 +138,7 @@ export async function login(state: LoginFormState, formData: FormData) {
       });
     }
   }
-  return response.data;
+  // return response.data;
 }
 
 

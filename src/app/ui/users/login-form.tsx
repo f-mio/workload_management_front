@@ -40,7 +40,6 @@ export default function LoginForm() {
                 value={formData.email}
                 onChange={handleChange}
               />
-              {state?.errors?.email && <p className="ms-2 w-60 text-red-600">{state.errors.email}</p>}
             </div>
             <div className="flex flex-col ms-5">
               <label htmlFor="password">Password:</label>
@@ -55,8 +54,10 @@ export default function LoginForm() {
             </div>
           </div>
           <div className="w-96 flex pt-3">
+            {state?.errors?.email && <p className="ms-2 w-60 text-red-600">{state.errors.email}</p>}
             {state?.errors?.password && <p className="ms-2 text-red-600">{state.errors.password}</p>}
           </div>
+          {state?.errors?.apiMessage && <p className="ms-2 w-60 text-red-600">{state.errors.apiMessage}</p>}
           <div className="w-full flex flex-row justify-center mt-3 mb-5">
             <button
               type="submit"
