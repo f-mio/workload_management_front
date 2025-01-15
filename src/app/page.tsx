@@ -1,24 +1,28 @@
-import { Suspense } from "react";
-import { getUser } from "@/app/lib/dal";
+"use client"
+
+
+import { Suspense, useContext } from "react";
 import TopPageDescription from "@/app/ui/top/description";
 import LoginForm from "@/app/ui/users/login-form";
 import LoginUserBar from "@/app/ui/users/login-user-bar";
+import { User } from "./lib/types/users";
+import { UserContext } from "./lib/contexts/UserContext";
 
 
-export default async function Home() {
+export default function Home() {
   // ログイン状態の場合userDataを取得
-  const user = await getUser();
+  const loginUser = useContext<User>(UserContext);
 
   return (
     <div className="grid grid-rows-[10px_1fr_10px] items-start justify-items-center sm:ps-10 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-start">
 
-        <LoginUserBar user={user} />
+        <LoginUserBar />
 
         <TopPageDescription />
 
         {/* ログインしていない場合のみ表示 */}
-        {user === null && (
+        {loginUser === null  && (
           <Suspense fallback={<div>Now Loading...</div>}>
             <LoginForm />
           </Suspense>

@@ -1,12 +1,11 @@
 "use server"
 
-
 import axios from "axios";
 import { cookies } from "next/headers";
 import apiServerInfo from "@/config/serverConfig";
 import {
   SignupFormSchema, SignUpFormState,
-  LoginFormSchema, LoginFormState } from '@/app/lib/schema/users';
+  LoginFormSchema, LoginFormState } from '@/app/lib/types/users';
 import { redirect } from "next/navigation";
 
 
@@ -110,13 +109,13 @@ export async function login(state: LoginFormState, formData: FormData) {
       return error
     });
 
+  // 200番を超えるステータスの場合エラーを出力
   if (response.status >= 300) {
     const errorMsg = response?.response?.data?.message
     return  {
         errors: {apiMessage: `${errorMsg}`},
       };
   }
-
 
   // FastAPIからのCookieをブラウザに転送
   const cookieStore = await cookies();  

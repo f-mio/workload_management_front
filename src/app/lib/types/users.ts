@@ -24,7 +24,8 @@ export const SignupFormSchema = z.object({
       message: 'Contain at least one special character.',
     })
     .trim(),
-})
+});
+
 
 export type SignUpFormState =
   | {
@@ -35,21 +36,20 @@ export type SignUpFormState =
         email?: string[]
         password?: string[]
       }
-      message?: string
     }
-  | undefined
+  | undefined;
 
 
-  export const LoginFormSchema = z.object({
-    email: z.string().email({ message: '有効なパスワードを入力してください。' }).trim(),
-    password: z
-      .string()
-      .min(6, { message: '6文字以上入力してください。' })
-      .trim(),
-  })
+export const LoginFormSchema = z.object({
+  email: z.string().email({ message: '有効なパスワードを入力してください。' }).trim(),
+  password: z
+    .string()
+    .min(6, { message: '6文字以上入力してください。' })
+    .trim(),
+});
 
 
-  export type LoginFormState =
+export type LoginFormState =
   | {
       errors?: {
         email?: string[]
@@ -57,4 +57,15 @@ export type SignUpFormState =
       }
       message?: string
     }
-  | undefined
+  | undefined;
+
+
+export type User = {
+  id: number;
+  name: string;
+  family_name: string;
+  first_name: string;
+  email: string;
+  update_timestamp: string | Date | null
+  create_timestamp: string | Date | null;
+} | null;
