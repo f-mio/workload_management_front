@@ -4,7 +4,7 @@ export default function TopPageDescription() {
   return (
     <div className="flex flex-col align-top">
       <h2 className="text-3xl underline underline-offset-1 pt-4">本アプリケーションについて</h2>
-      <div className="text-xl pt-2">
+      <div className="text-xl pt-4 leading-8">
         本アプリケーションはJIRAに登録されているSubtaskに対して本App用DB内に工数を登録するアプリケーションです。<br />
         JIRA内のProjectおよびIssueの情報もApp用DBと同期させBIツール等で工数情報を可視化することも可能です。<br />
         (JIRAのIssueとは(エピック, ストーリー, バグ, タスク, サブタスクおよびカスタム課題のことです))<br />
