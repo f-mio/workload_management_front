@@ -2,11 +2,15 @@
 
 
 import { Suspense, useContext } from "react";
-import TopPageDescription from "@/app/ui/top/description";
+// コンポーネント
+import PageTitle from "@/app/ui/common/page-title";
 import LoginForm from "@/app/ui/users/login-form";
-import LoginUserBar from "@/app/ui/users/login-user-bar";
-import { User } from "./lib/types/users";
+import TopPageDescription from "@/app/ui/top/description";
+import LoginUserBar from "@/app/ui/common/login-user-bar";
+// 関数、コンテキスト
 import { UserContext } from "./lib/contexts/UserContext";
+// 型
+import { User } from "./lib/types/users";
 
 
 export default function Home() {
@@ -14,10 +18,12 @@ export default function Home() {
   const loginUser = useContext<User>(UserContext);
 
   return (
-    <div className="grid grid-rows-[10px_1fr_10px] items-start justify-items-center sm:ps-10 font-[family-name:var(--font-geist-sans)]">
+    <div className="grid grid-rows-[10px_1fr_10px] items-start justify-items-center font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-start">
 
-        <LoginUserBar />
+        <LoginUserBar loginUser={loginUser} />
+
+        <PageTitle titleName="本アプリケーションについて" />
 
         <TopPageDescription />
 

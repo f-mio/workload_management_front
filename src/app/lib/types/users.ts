@@ -67,5 +67,5 @@ export type User = {
   first_name: string;
   email: string;
   update_timestamp: string | Date | null
-  create_timestamp: string | Date | null;
+  create_timestamp: string | Date | null
 } | null;
