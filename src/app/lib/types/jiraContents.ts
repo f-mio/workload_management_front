@@ -25,3 +25,17 @@ export type Issue = {
   update_timestamp: string | Date | null
   create_timestamp: string | Date | null
 };
+
+export type Subtask = {
+  id: number
+  name: string
+  project_id: number
+  parent_issue_id: number | null
+  type: string
+  status: string
+  limit_date: | null
+  description: string
+  path: string
+  update_timestamp: string | Date | null
+  create_timestamp: string | Date | null
+};

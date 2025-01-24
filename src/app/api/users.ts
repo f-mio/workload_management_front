@@ -148,3 +148,28 @@ export async function logout() {
   const cookieStore = await cookies()
   cookieStore.delete('access_token')
 }
+
+
+/**
+ * ローカルDBから登録済みユーザ一覧を取得するAPI
+ * @param {null}
+ * @returns {object} : subtasks
+ */
+const apiFetchUsers = async() => {
+  // エンドポイント
+  const endpoint = apiServerInfo["epGetAllUser"];
+  const users = await axios.get(endpoint)
+    .then(function (response) {
+      return response.data
+    })
+    .catch(error => {
+      console.log(error);
+      return null;
+    });
+  
+  return users;
+};
+
+export {
+  apiFetchUsers
+}

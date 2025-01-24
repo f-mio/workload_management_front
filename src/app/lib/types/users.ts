@@ -66,6 +66,7 @@ export type User = {
   family_name: string;
   first_name: string;
   email: string;
+  is_superuser: boolean;
   update_timestamp: string | Date | null
   create_timestamp: string | Date | null
 } | null;
