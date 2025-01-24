@@ -1,6 +1,6 @@
 "use client"
 
-import { useContext } from "react";
+import { useContext, memo } from "react";
 import Link from "next/link"
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { ChartBarIcon, ChartPieIcon } from "@heroicons/react/24/solid";
@@ -8,7 +8,7 @@ import { UserContext } from "@/app/lib/contexts/UserContext";
 import { User } from "@/app/lib/types/users";
 
 
-export default function WorkloadNavLinks() {
+const WorkloadNavLinks = memo(() => {
   // ログイン状態の場合userDataを取得
   const loginUser = useContext<User>(UserContext);
 
@@ -34,4 +34,6 @@ export default function WorkloadNavLinks() {
       }
     </ol>
   );
-}
+});
+
+export default WorkloadNavLinks;

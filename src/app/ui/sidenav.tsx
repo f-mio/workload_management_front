@@ -1,16 +1,18 @@
 "use client"
 
-import { useContext } from 'react';
+import { memo, useContext } from 'react';
 import Link from 'next/link';
 import { PowerIcon } from '@heroicons/react/24/outline';
+// コンポーネント
 import UserNavLinks from '@/app/ui/users/nav-links';
+import SuperuserNavLinks from '@/app/ui/users/superuser-nav-links';
 import WorkloadNavLinks from '@/app/ui/workloads/nav-links';
 import { UserContext } from '@/app/lib/contexts/UserContext';
 import { User } from '@/app/lib/types/users';
 import { logout } from '@/app/api/users';
 
 
-export default function SideNav() {
+const SideNav = memo(() => {
   // ユーザ情報を取得
   const loginUser = useContext<User>(UserContext);
 
@@ -35,6 +37,12 @@ export default function SideNav() {
         <h3 className="bg-blue-200 p-3 underline underline-offset-2">ユーザ情報</h3>
         <UserNavLinks />
 
+        {/* 管理者機能 */}
+        { loginUser?.is_superuser === true && ( <>
+          <h3 className="bg-blue-200 p-3 underline underline-offset-2">管理者機能</h3>
+          <SuperuserNavLinks />
+        </>)}
+
         {/* <div className="hidden h-auto w-full grow rounded-md bg-gray-50 md:block"></div> */}
         {loginUser !== null && (
           <form>
@@ -49,4 +57,6 @@ export default function SideNav() {
       </div>
     </div>
   );
-}
+});
+
+export default SideNav;

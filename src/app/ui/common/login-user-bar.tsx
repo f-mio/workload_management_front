@@ -1,11 +1,12 @@
 "use client"
 
+import { memo } from 'react';
 import { ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/solid';
 import { logout } from "@/app/api/users";
 import { User } from "@/app/lib/types/users";
 
 
-const LoginUserBar = ({loginUser}: {loginUser: User|null}) => {
+const LoginUserBar = memo(({loginUser}: {loginUser: User|null}) => {
 
   return (
     <div className="fixed top-1 right-2">
@@ -25,7 +26,7 @@ const LoginUserBar = ({loginUser}: {loginUser: User|null}) => {
         )}
       </div>
     </div>
-  )
-}
+  );
+});
 
 export default LoginUserBar

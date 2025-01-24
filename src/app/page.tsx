@@ -1,7 +1,7 @@
 "use client"
 
 
-import { Suspense, useContext } from "react";
+import { memo, Suspense, useContext } from "react";
 // コンポーネント
 import PageTitle from "@/app/ui/common/page-title";
 import LoginForm from "@/app/ui/users/login-form";
@@ -13,7 +13,7 @@ import { UserContext } from "./lib/contexts/UserContext";
 import { User } from "./lib/types/users";
 
 
-export default function Home() {
+const Home = memo(() => {
   // ログイン状態の場合userDataを取得
   const loginUser = useContext<User>(UserContext);
 
@@ -36,4 +36,6 @@ export default function Home() {
       </main>
     </div>
   );
-}
+});
+
+export default Home;

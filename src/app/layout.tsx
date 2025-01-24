@@ -1,34 +1,35 @@
-import React from 'react';
+import React, { memo } from 'react';
 import '@/app/ui/global.css';
-import { getUser } from "@/app/lib/dal";
 import { inter } from '@/app/ui/fonts';
+// コンポーネント
 import SideNav from '@/app/ui/sidenav';
-import { User } from '@/app/lib/types/users';
+// 関数
+import { getUser } from "@/app/lib/dal";
 import { UserProvider } from '@/app/lib/contexts/UserContext';
+// 型
+import { User } from '@/app/lib/types/users';
 
 
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const RootLayout = memo(
+  async ({ children, }: { children: React.ReactNode; }) => {
 
-  // JWT tokenからログイン情報を取得
-  const loginUser: User = await getUser()
+    // JWT tokenからログイン情報を取得
+    const loginUser: User = await getUser()
 
-  return (
-    <html lang="ja">
-      <body className={`${inter.className} antialiased`}>
-        <UserProvider loginUser={loginUser}>
-          <Layout children={children} />
-        </UserProvider>
-      </body>
-    </html>
-  );
-}
+    return (
+      <html lang="ja">
+        <body className={`${inter.className} antialiased`}>
+          <UserProvider loginUser={loginUser}>
+            <Layout children={children} />
+          </UserProvider>
+        </body>
+      </html>
+    );
+  }
+);
 
 
-function Layout({ children }: { children: React.ReactNode }) {
+const Layout = memo(({ children }: { children: React.ReactNode }) => {
 
   return (
       <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
@@ -40,4 +41,7 @@ function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </div>
   );
-}
+});
+
+
+export default RootLayout;
