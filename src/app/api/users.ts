@@ -2,11 +2,13 @@
 
 import axios from "axios";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+// 関数
 import apiServerInfo from "@/config/serverConfig";
+// 型
 import {
   SignupFormSchema, SignUpFormState,
   LoginFormSchema, LoginFormState } from '@/app/lib/types/users';
-import { redirect } from "next/navigation";
 
 
 /**

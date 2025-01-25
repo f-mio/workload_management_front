@@ -2,8 +2,10 @@
 
 import axios from "axios";
 import { cookies } from "next/headers";
-import apiServerInfo from "@/config/serverConfig";
 import { redirect } from "next/navigation";
+// 関数
+import apiServerInfo from "@/config/serverConfig";
+// 型
 import { User } from "@/app/lib/types/users";
 import { Project, Issue, Subtask } from "@/app/lib/types/jiraContents";
 
