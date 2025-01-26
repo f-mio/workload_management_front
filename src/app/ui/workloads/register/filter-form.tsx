@@ -1,5 +1,4 @@
 import { memo } from "react";
-import { BoltIcon, BookmarkIcon, BugAntIcon, CheckIcon } from "@heroicons/react/24/solid";
 // コンポーネント
 import ProjectSelectForm from "@/app/ui/workloads/register/project-select-form";
 import IssueSelectForm from "@/app/ui/workloads/register/issue-select-form";
@@ -13,17 +12,17 @@ const FilterForm = memo((
   ) => {
 
   return (
-    <div className="w-3/4">
-      <div className="flex flex-col justify-start w-full">
+    <div className="w-full flex flex-col items-center">
+      <div className="w-3/4 flex flex-col justify-center">
         <ProjectSelectForm projects={projects} eventFunc={eventFunc} />
       </div>
       {/* project選択されている場合のに下記を表示するほうが良いと思われる。 */}
-      <div className="flex flex-row flex-wrap justify-center w-full">
+      <div className="w-3/4 pt-2 flex flex-row flex-wrap justify-center">
         {/* TODO 2列均等に配列する。 labelもつける */}
-        <IssueSelectForm issues={epics} issueName="epic" color="violet-200" eventFunc={eventFunc} />
-        <IssueSelectForm issues={stories} issueName="story" color="green-200" eventFunc={eventFunc} />
-        <IssueSelectForm issues={bugs} issueName="bug" color="red-200" eventFunc={eventFunc} />
-        <IssueSelectForm issues={tasks} issueName="task" color="blue-200" eventFunc={eventFunc} />
+        <IssueSelectForm issues={epics} issueName="epic" color="bg-violet-200" eventFunc={eventFunc} />
+        <IssueSelectForm issues={stories} issueName="story" color="bg-emerald-200" eventFunc={eventFunc} />
+        <IssueSelectForm issues={bugs} issueName="bug" color="bg-red-200" eventFunc={eventFunc} />
+        <IssueSelectForm issues={tasks} issueName="task" color="bg-blue-200" eventFunc={eventFunc} />
       </div>
     </div>
   );

@@ -7,12 +7,12 @@ const ProjectSelectForm = memo((
   ) => {
 
   return (
-    <div className="w-full">
-      <label className="w-1/3">{`　　プロジェクト選択: `}</label>
+    <div className="w-full flex flex-row items-center">
+      <label className="w-1/3 me-3 text-end">{`プロジェクト:`}</label>
       <select
         name="project-choice"
         id="project_select"
-        className="w-2/3"
+        className="w-1/2 rounded-md"
         onChange={e =>{eventFunc()}}
         // onMouseDown={e =>{eventFunc()}}
       >

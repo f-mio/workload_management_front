@@ -4,7 +4,6 @@ import { useState, useEffect, useContext, memo } from "react";
 import Link from "next/link"
 // コンポーネント
 import PageTitle from "@/app/ui/common/page-title";
-import JiraUploadButton from "@/app/ui/workloads/jira-update-button";
 import LoginUserBar from "@/app/ui/common/login-user-bar";
 import FilterForm from "@/app/ui/workloads/register/filter-form";
 import SubtaskSelector from "@/app/ui/workloads/register/subtask-selector";
@@ -127,7 +126,6 @@ export default function RegisterWorkload() {
       <main className="flex flex-col gap-8 row-start-2 items-start">
         <LoginUserBar loginUser={loginUser} />
         <PageTitle titleName="工数登録ページ" />
-        <JiraUploadButton />
         <FilterForm
           projects={projects} epics={filteredEpics} stories={filteredStories}
           bugs={filteredBugs} tasks={filteredTasks} eventFunc={filterValueChanged}
