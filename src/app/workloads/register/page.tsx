@@ -65,10 +65,10 @@ export default function RegisterWorkload() {
       const resUsers = await apiFetchUsers();
       const resWorkloads = await apiFetchUserWorkload(loginUser);
       // issueをepic, story, bug, taskに振り分け
-      const epics = resIssues?.filter( issue => issue?.type == epicName ? issue : null) || null;
-      const stories = resIssues?.filter( issue => issue?.type == storyName ? issue : null) || null;
-      const bugs = resIssues?.filter( issue => issue?.type == bugName ? issue : null) || null;
-      const tasks = resIssues?.filter( issue => issue?.type == taskName ? issue : null) || null;
+      const epics = resIssues?.filter( issue => issue?.type == epicName ) || null;
+      const stories = resIssues?.filter( issue => issue?.type == storyName ) || null;
+      const bugs = resIssues?.filter( issue => issue?.type == bugName ) || null;
+      const tasks = resIssues?.filter( issue => issue?.type == taskName ) || null;
 
       // stateの更新 (情報のマスタ)
       setProjects(resProjects);
@@ -92,30 +92,52 @@ export default function RegisterWorkload() {
 
   function filterValueChanged() {
     const projectSelect = document.querySelector<HTMLSelectElement>("#project_select"),
-      epicSelect = document.querySelector<HTMLSelectElement>("#epic_select"),
-      storySelect = document.querySelector<HTMLSelectElement>("#story_select"),
-      bugSelect = document.querySelector<HTMLSelectElement>("#bug_select"),
-      taskSelect = document.querySelector<HTMLSelectElement>("#task_select");
-    const projectVal = projectSelect ? projectSelect.value : "0",
-      epicVal = epicSelect ? epicSelect.value : "0",
-      storyVal = storySelect ? storySelect.value : "0",
-      bugVal = bugSelect ? bugSelect.value : "0",
-      taskVal = taskSelect ? taskSelect.value : "0";
+      projectVal = projectSelect ? projectSelect.value : "0";
 
     let newSubtasks = subtasks ? [...subtasks] : [];
     if (projectVal !== "0") {
-      newSubtasks = newSubtasks.filter(item => item.path.includes(`/${projectVal}/`));
+      newSubtasks = newSubtasks.filter(item => item.project_id == parseInt(projectVal) );
     };
-    if (epicVal !== "0") {
+    // projectでフィルタ
+    setFilteredEpics(epics?.filter(item => (item.project_id == parseInt(projectVal) || parseInt(projectVal) == 0)) || null);
+    setFilteredStories(stories?.filter(item => ( item.project_id == parseInt(projectVal) || parseInt(projectVal) == 0)) || null);
+    setFilteredBugs(bugs?.filter(item => ( item.project_id == parseInt(projectVal) || parseInt(projectVal) == 0)) || null);
+    setFilteredTasks(tasks?.filter(item => ( item.project_id == parseInt(projectVal) || parseInt(projectVal) == 0)) || null);
+
+    // ecpiフィルタ
+    const epicSelect = document.querySelector<HTMLSelectElement>("#epic_select"),
+      epicVal = epicSelect ? epicSelect.value : "0",
+      epicInfo = epics?.filter(item => (item.id === parseInt(epicVal) && item.project_id == parseInt(projectVal)));
+
+    if (epicInfo?.length == 0 ) {
+      if (epicSelect) {epicSelect.value = "0"};
+    } else if (epicVal !== "0") {
       newSubtasks = newSubtasks.filter(item => item.path.includes(`${epicVal}>`));
     };
-    if (storyVal !== "0") {
+
+    const storySelect = document.querySelector<HTMLSelectElement>("#story_select"),
+      bugSelect = document.querySelector<HTMLSelectElement>("#bug_select"),
+      taskSelect = document.querySelector<HTMLSelectElement>("#task_select");
+    const storyVal = storySelect ? storySelect.value : "0",
+      bugVal = bugSelect ? bugSelect.value : "0",
+      taskVal = taskSelect ? taskSelect.value : "0";
+    const storyInfo = stories?.filter(item => (item.id === parseInt(storyVal) && item.project_id == parseInt(projectVal))),
+      bugInfo = bugs?.filter(item => (item.id === parseInt(bugVal) && item.project_id == parseInt(projectVal))),
+      taskInfo = tasks?.filter(item => (item.id === parseInt(taskVal) && item.project_id == parseInt(projectVal)));
+
+    if (storyInfo?.length == 0 ) {
+      if (storySelect) {storySelect.value = "0"};
+    } else if (storyVal !== "0") {
       newSubtasks = newSubtasks.filter(item => item.path.includes(`${storyVal}>`));
     };
-    if (bugVal !== "0") {
+    if (bugInfo?.length == 0 ) {
+      if (bugSelect) {bugSelect.value = "0"};
+    } else if (bugVal !== "0") {
       newSubtasks = newSubtasks.filter(item => item.path.includes(`${bugVal}>`));
     };
-    if (taskVal !== "0") {
+    if (taskInfo?.length == 0 ) {
+      if (taskSelect) {taskSelect.value = "0"};
+    } else if (taskVal !== "0") {
       newSubtasks = newSubtasks.filter(item => item.path.includes(`${taskVal}>`));
     };
     setFilteredSubtasks(newSubtasks);
