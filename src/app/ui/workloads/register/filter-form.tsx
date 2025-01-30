@@ -18,7 +18,6 @@ const FilterForm = memo((
       </div>
       {/* project選択されている場合のに下記を表示するほうが良いと思われる。 */}
       <div className="w-3/4 pt-2 flex flex-row flex-wrap justify-center">
-        {/* TODO 2列均等に配列する。 labelもつける */}
         <IssueSelectForm issues={epics} issueName="epic" color="bg-violet-200" eventFunc={eventFunc} />
         <IssueSelectForm issues={stories} issueName="story" color="bg-emerald-200" eventFunc={eventFunc} />
         <IssueSelectForm issues={bugs} issueName="bug" color="bg-red-200" eventFunc={eventFunc} />

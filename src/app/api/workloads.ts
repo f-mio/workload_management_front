@@ -47,6 +47,44 @@ export async function apiFetchUserWorkload(loginUser: User|null) {
 };
 
 
+export async function apiFetchSpecifyWorkload(loginUser: User|null, targetDate: string) {
+
+  if (loginUser == null) {
+    redirect("/");
+  }
+
+  // エンドポイント
+  const endpoint = `${apiServerInfo["epGetWorkloadsUseCondition"]}`;
+
+  const searchCondition = { specify_user: loginUser.id, target_date: targetDate}
+  const response = await axios.post(
+    endpoint, searchCondition,
+    {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    .then(function (response) {
+      return response.data
+    })
+    .catch(function (error) {
+      console.log(error)
+      return error
+    });
+
+  // 200番を超えるステータスの場合エラーを出力
+  if (response.status >= 300) {
+    const errorMsg = response?.response?.data?.message
+    return  {
+        errors: {apiMessage: `${errorMsg}`},
+    };
+  };
+
+  return response
+};
+
+
 export async function postNewWorkload (stete: WorkloadFormState, formData: FormData) {
   // 必要なデータのみを抽出
   const validatedFields = WorkloadFormSchema.safeParse({
