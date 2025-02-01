@@ -7,15 +7,15 @@ import PageTitle from "@/app/ui/common/page-title";
 import LoginUserBar from "@/app/ui/common/login-user-bar";
 import FilterForm from "@/app/ui/workloads/register/filter-form";
 import SubtaskSelector from "@/app/ui/workloads/register/subtask-selector";
+import WorkloadList from "@/app/ui/workloads/register/workload-list"; 
 // 関数
 import { apiFetchUsers } from "@/app/api/users";
 import { apiFetchIssues, apiFetchProjects, apiFetchSubtasks } from "@/app/api/jiraContents";
-import { apiFetchUserWorkload } from "@/app/api/workloads";
 import { UserContext } from "@/app/lib/contexts/UserContext";
 // 型
 import { Project, Issue, Subtask } from "@/app/lib/types/jiraContents";
 import { User } from "@/app/lib/types/users";
-import { Workload } from "@/app/lib/types/workloads";
+import { ResisteredWorkload } from "@/app/lib/types/workloads";
 import { redirect } from "next/navigation";
 
 
@@ -33,7 +33,7 @@ export default function RegisterWorkload() {
   const [issues, setIssues] = useState<Issue[] | null>(null);
   const [subtasks, setSubtasks] = useState<Subtask[] | null>(null);
   const [users, setUsers] = useState<User[] | null>(null);
-  const [workloads, setWorkloads] = useState<Workload[] | null>(null);
+  const [workloads, setWorkloads] = useState<ResisteredWorkload[] | null>(null);
   // issue種類
   const [epics, setEpics] = useState<Issue[] | null>(null);
   const [stories, setStories] = useState<Issue[] | null>(null);
@@ -63,7 +63,6 @@ export default function RegisterWorkload() {
       const resIssues = await apiFetchIssues();
       const resSubtasks = await apiFetchSubtasks();
       const resUsers = await apiFetchUsers();
-      const resWorkloads = await apiFetchUserWorkload(loginUser);
       // issueをepic, story, bug, taskに振り分け
       const epics = resIssues?.filter( issue => issue?.type == epicName ) || null;
       const stories = resIssues?.filter( issue => issue?.type == storyName ) || null;
@@ -75,7 +74,6 @@ export default function RegisterWorkload() {
       setIssues(resIssues);
       setSubtasks(resSubtasks);
       setUsers(resUsers);
-      setWorkloads(resWorkloads);
       setEpics(epics);
       setStories(stories);
       setBugs(bugs);
@@ -90,7 +88,7 @@ export default function RegisterWorkload() {
     fetchSubtasks();
   }, []);
 
-  function filterValueChanged() {
+  function filterValueChanged(e: Event) {
     const projectSelect = document.querySelector<HTMLSelectElement>("#project_select"),
       projectVal = projectSelect ? projectSelect.value : "0";
 
@@ -141,7 +139,7 @@ export default function RegisterWorkload() {
       newSubtasks = newSubtasks.filter(item => item.path.includes(`${taskVal}>`));
     };
     setFilteredSubtasks(newSubtasks);
-  }
+  };
 
   return (
     <div className="grid grid-rows-[10px_1fr_10px] items-start font-[family-name:var(--font-geist-sans)]">
@@ -152,7 +150,8 @@ export default function RegisterWorkload() {
           projects={projects} epics={filteredEpics} stories={filteredStories}
           bugs={filteredBugs} tasks={filteredTasks} eventFunc={filterValueChanged}
         />
-        <SubtaskSelector subtasks={filteredSubtasks} />
+        <SubtaskSelector subtasks={filteredSubtasks} setWorkloads={setWorkloads} />
+        <WorkloadList workloads={workloads} />
       </main>
     </div>
   );

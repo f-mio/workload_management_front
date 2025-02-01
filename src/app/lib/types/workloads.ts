@@ -1,18 +1,6 @@
 import { z } from 'zod'
 
 
-export type Workload = {
-  id: number
-  subtask_id: number
-  user_id: number
-  work_date: string | Date | null
-  workload_minute: number
-  detail: string
-  update_timestamp: string | Date | null
-  create_timestamp: string | Date | null
-};
-
-
 export const WorkloadFormSchema = z.object({
   subtask_id: z
     .number().int().gte(0),
@@ -35,3 +23,23 @@ export type WorkloadFormState =
       }
     }
   | undefined;
+
+
+export type ResisteredWorkload = {
+  project_id: number
+  project_name: string
+  issue_id_1: number | null
+  issue_name_1: string | null
+  issue_id_2: number | null
+  issue_name_2: string | null
+  subtask_id: number
+  subtask_name: string
+  workload_id: number
+  user_id: number
+  user_name: string
+  work_date: string | Date | null
+  workload_minute: number
+  detail: string
+  update_timestamp: string | Date | null
+  create_timestamp: string | Date | null
+};

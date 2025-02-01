@@ -4,13 +4,13 @@ import { Subtask } from "@/app/lib/types/jiraContents";
 import JiraUploadButton from "@/app/ui/workloads/jira-update-button";
 // 関数
 import { UserContext } from "@/app/lib/contexts/UserContext";
-import { postNewWorkload } from "@/app/api/workloads";
+import { postNewWorkload, apiFetchSpecifyWorkload } from "@/app/api/workloads";
 // 型
 import { User } from "@/app/lib/types/users";
 import { redirect } from "next/navigation";
 
 
-const SubtaskSelector = memo(({subtasks}: {subtasks: Subtask[]|null}) => {
+const SubtaskSelector = memo(({subtasks, setWorkloads}: {subtasks: Subtask[]|null, setWorkloads: any}) => {
   // ログインユーザ情報を取得
   const loginUser = useContext<User>(UserContext);
   // ログインしていない場合はトップページにリダイレクト
@@ -25,12 +25,17 @@ const SubtaskSelector = memo(({subtasks}: {subtasks: Subtask[]|null}) => {
     detail: ""
   })
   // フォーム内容の変更時のハンドラ
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({
       ...prev,
       [e.target.name]: e.target.value
-    }))
-  }
+    }));
+    if (e.target.name == "work_date") {
+      const resWorkloads = await apiFetchSpecifyWorkload(loginUser, e.target.value);
+      setWorkloads(resWorkloads);
+    }
+  
+  };
 
 
   return (
