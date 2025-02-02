@@ -14,8 +14,8 @@ const UserNavLinks = memo(() => {
   return (
     <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
       { loginUser !== null && (
-        <li className="mb-1 flex flex-row items-center">
-          <Link href="#">
+        <li className="flex flex-row items-center">
+          <Link href="#" className="w-full">
             <button
               className="w-full flex h-[36px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3"
             >

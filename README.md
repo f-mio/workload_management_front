@@ -58,7 +58,8 @@ workload managementはプロジェクトの工数管理を行うためのアプ�
 ```text
 WORKLOAD_APP_API_SERVER="your host information  ex. localhost:8000"
 # CSRFトークン設定用
-ENDPOINT_GET_CSRF=${WORKLOAD_APP_API_SERVER}/api/csrftoken
+ENDPOINT_GET_CSRF=${WORKLOAD_APP_API_SERVER}/api/auth/csrftoken
+ENDPOINT_VERIFY_JWT=${WORKLOAD_APP_API_SERVER}/api/auth/verify_jwt
 # ユーザ管理機能用
 ENDPOINT_USER_LOGIN=${WORKLOAD_APP_API_SERVER}/api/user/signin
 ENDPOINT_USER_SIGNUP=${WORKLOAD_APP_API_SERVER}/api/user/signup
@@ -68,21 +69,22 @@ ENDPOINT_GET_ALL_USERS=${WORKLOAD_APP_API_SERVER}/api/user/active/all
 # JIRA情報取得
 ENDPOINT_GET_PROJECTS=${WORKLOAD_APP_API_SERVER}/api/project/db/all
 ENDPOINT_GET_ISSUES=${WORKLOAD_APP_API_SERVER}/api/issue/main-task/db/all
-ENDPOINT_GET_SUBTASKS=${WORKLOAD_APP_API_SERVER}/api/issue/subtask/db/all
+# ENDPOINT_GET_SUBTASKS=${WORKLOAD_APP_API_SERVER}/api/issue/subtask/db/all
+ENDPOINT_GET_SUBTASKS=${WORKLOAD_APP_API_SERVER}/api/issue/subtask_with_path/db/all
 # 全更新機能用
 ENDPOINT_UPDATE_ALL_PROJECTS_AND_ISSUES=${WORKLOAD_APP_API_SERVER}/api/project/db/update/all
 # 工数登録機能用
 ENDPOINT_GET_WL=${WORKLOAD_APP_API_SERVER}/api/workload/db/
 ENDPOINT_POST_WL=${WORKLOAD_APP_API_SERVER}/api/workload/db/post
 ENDPOINT_PUT_WL=${WORKLOAD_APP_API_SERVER}/api/workload/db/update/
-ENDPOINT_GET_WORKLOADS_USING_CONDITION=${WORKLOAD_APP_API_SERVER}/api/workload/db/search/
-ENDPOINT_GET_USER_WORKLOADS=${WORKLOAD_APP_API_SERVER}/api/workload/db/user/
+ENDPOINT_GET_WORKLOADS_USING_CONDITION=${WORKLOAD_APP_API_SERVER}/api/workload/db/search
+ENDPOINT_GET_USER_WORKLOADS=${WORKLOAD_APP_API_SERVER}/api/workload/db/user
 # 管理者機能用
 ENDPOINT_GET_JIRA_PROJECTS_ROOT=${WORKLOAD_APP_API_SERVER}/api/project/root/jira/all
 ENDPOINT_PUT_PROJECT_ROOT=${WORKLOAD_APP_API_SERVER}/api/project/root/db/update
-ENDPOINT_PUT_ACTIVATE_LOG_DEL_USER=${WORKLOAD_APP_API_SERVER}/api/user/root/activate/
-ENDPOINT_DEL_PHISICAL_DEL_USER=${WORKLOAD_APP_API_SERVER}/api/user/root/delete/
-ENDPOINT_PUT_USER_TO_ROOT=${WORKLOAD_APP_API_SERVER}/api/user/root/permission/
+ENDPOINT_PUT_ACTIVATE_LOG_DEL_USER=${WORKLOAD_APP_API_SERVER}/api/user/root/activate
+ENDPOINT_DEL_PHISICAL_DEL_USER=${WORKLOAD_APP_API_SERVER}/api/user/root/delete
+ENDPOINT_PUT_USER_TO_ROOT=${WORKLOAD_APP_API_SERVER}/api/user/root/permission
 ```
 
 

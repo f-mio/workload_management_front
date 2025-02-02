@@ -1,7 +1,6 @@
 import { memo, useContext, useState, useActionState } from "react";
 // コンポーネント
 import { Subtask } from "@/app/lib/types/jiraContents";
-import JiraUploadButton from "@/app/ui/workloads/jira-update-button";
 // 関数
 import { UserContext } from "@/app/lib/contexts/UserContext";
 import { postNewWorkload, apiFetchSpecifyWorkload } from "@/app/api/workloads";
@@ -33,16 +32,14 @@ const SubtaskSelector = memo(({subtasks, setWorkloads}: {subtasks: Subtask[]|nul
     if (e.target.name == "work_date") {
       const resWorkloads = await apiFetchSpecifyWorkload(loginUser, e.target.value);
       setWorkloads(resWorkloads);
-    }
-  
+    };
   };
-
 
   return (
     <div className="w-full pt-3">
       <form action={action} className="w-full flex justify-center">
         <div className="w-5/6 flex flex-col">
-          <div className="w-full max-h-40 flex flex-row flex-wrap overflow-y-auto p-4 border-2 rounded-md">
+          <div className="w-full max-h-60 flex flex-row flex-wrap overflow-y-auto p-4 border-2 rounded-2xl">
             {subtasks?.map( subtask => (
               <div
                 className="w-1/3 py-1 flex flex-row"
@@ -123,7 +120,6 @@ const SubtaskSelector = memo(({subtasks, setWorkloads}: {subtasks: Subtask[]|nul
             >
               送信
             </button>
-            <JiraUploadButton />
           </div>
         </div>
       </form>

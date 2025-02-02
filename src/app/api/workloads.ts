@@ -7,8 +7,7 @@ import { redirect } from "next/navigation";
 import apiServerInfo from "@/config/serverConfig";
 // 型
 import { User } from "@/app/lib/types/users";
-import { Project, Issue } from "@/app/lib/types/jiraContents";
-import { Workload, WorkloadFormState, WorkloadFormSchema } from "@/app/lib/types/workloads";
+import { WorkloadFormState, WorkloadFormSchema } from "@/app/lib/types/workloads";
 
 
 export async function apiFetchUserWorkload(loginUser: User|null) {

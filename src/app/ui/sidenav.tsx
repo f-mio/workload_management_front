@@ -27,19 +27,19 @@ const SideNav = memo(() => {
           {"WorkLoad App"}
         </div>
       </Link>
-      <div className="flex grow flex-row justify-start space-x-2 md:flex-col md:space-x-0 md:space-y-2">
+      <div className="flex grow flex-row justify-start space-x-1 md:flex-col md:space-x-0 md:space-y-2">
 
         {/* 工数登録 */}
-        <h3 className="bg-blue-200 p-3 underline underline-offset-2">工数情報</h3>
+        <h3 className="bg-blue-200 p-1 underline underline-offset-2">工数情報</h3>
         <WorkloadNavLinks />
 
         {/* ユーザ情報 */}
-        <h3 className="bg-blue-200 p-3 underline underline-offset-2">ユーザ情報</h3>
+        <h3 className="bg-blue-200 p-1 underline underline-offset-2">ユーザ情報</h3>
         <UserNavLinks />
 
         {/* 管理者機能 */}
         { loginUser?.is_superuser === true && ( <>
-          <h3 className="bg-blue-200 p-3 underline underline-offset-2">管理者機能</h3>
+          <h3 className="bg-blue-200 p-1 underline underline-offset-2">管理者機能</h3>
           <SuperuserNavLinks />
         </>)}
 
