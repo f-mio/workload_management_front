@@ -105,7 +105,7 @@ export default function RegisterWorkload() {
     // ecpiフィルタ
     const epicSelect = document.querySelector<HTMLSelectElement>("#epic_select"),
       epicVal = epicSelect ? epicSelect.value : "0",
-      epicInfo = epics?.filter(item => (item.id === parseInt(epicVal) && item.project_id == parseInt(projectVal)));
+      epicInfo = epics?.filter(item => (item.id === parseInt(epicVal) && (item.project_id == parseInt(projectVal) || parseInt(projectVal) === 0)));
 
     if (epicInfo?.length == 0 ) {
       if (epicSelect) {epicSelect.value = "0"};
@@ -119,9 +119,9 @@ export default function RegisterWorkload() {
     const storyVal = storySelect ? storySelect.value : "0",
       bugVal = bugSelect ? bugSelect.value : "0",
       taskVal = taskSelect ? taskSelect.value : "0";
-    const storyInfo = stories?.filter(item => (item.id === parseInt(storyVal) && item.project_id == parseInt(projectVal))),
-      bugInfo = bugs?.filter(item => (item.id === parseInt(bugVal) && item.project_id == parseInt(projectVal))),
-      taskInfo = tasks?.filter(item => (item.id === parseInt(taskVal) && item.project_id == parseInt(projectVal)));
+    const storyInfo = stories?.filter(item => (item.id === parseInt(storyVal) && (item.project_id == parseInt(projectVal) || parseInt(projectVal) === 0))),
+      bugInfo = bugs?.filter(item => (item.id === parseInt(bugVal) && (item.project_id == parseInt(projectVal) || parseInt(projectVal) === 0))),
+      taskInfo = tasks?.filter(item => (item.id === parseInt(taskVal) && (item.project_id == parseInt(projectVal) || parseInt(projectVal) === 0)));
 
     if (storyInfo?.length == 0 ) {
       if (storySelect) {storySelect.value = "0"};
