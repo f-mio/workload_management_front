@@ -13,13 +13,21 @@ const SuperuserNavLinks = memo(() => {
 
   return (
     <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-      <li className="mb-2 flex flex-row items-center">
-        <CheckCircleIcon className="h-6 mx-1 text-blue-600" />
-        有効プロジェクト選択
+      <li className="flex flex-row items-center">
+        <button
+          className="w-full flex h-[36px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3"
+        >
+          <CheckCircleIcon className="h-6 mx-1 text-blue-600" />
+          有効プロジェクト選択
+        </button>
       </li>
-      <li className="mb-2 flex flex-row items-center">
-        <UserPlusIcon className="h-6 mx-1 text-blue-600" />
-        <Link href="/users/signup">ユーザ登録</Link>
+      <li className="mb-1 flex flex-row items-center">
+       <button
+          className="w-full flex h-[36px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3"
+        >
+          <UserPlusIcon className="h-6 mx-1 text-blue-600" />
+          <Link href="/users/signup">ユーザ登録</Link>
+        </button>
       </li>
     </ol>
   );

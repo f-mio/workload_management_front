@@ -42,7 +42,7 @@ const SubtaskSelector = memo(({subtasks, setWorkloads}: {subtasks: Subtask[]|nul
     <div className="w-full pt-3">
       <form action={action} className="w-full flex justify-center">
         <div className="w-5/6 flex flex-col">
-          <div className="w-full flex flex-row flex-wrap p-4 border-2 rounded-md">
+          <div className="w-full max-h-40 flex flex-row flex-wrap overflow-y-auto p-4 border-2 rounded-md">
             {subtasks?.map( subtask => (
               <div
                 className="w-1/3 py-1 flex flex-row"

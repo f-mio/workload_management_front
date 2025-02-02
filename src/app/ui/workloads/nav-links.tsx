@@ -15,21 +15,39 @@ const WorkloadNavLinks = memo(() => {
   return (
     <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
       { loginUser !== null && (
-        <li className="mb-2 flex flex-row items-center">
-          <PencilSquareIcon className="h-6 mx-1 text-blue-600" />
-          <Link href="/workloads/register">工数登録</Link>
+        <li className="flex flex-row items-center">
+          <Link href="/workloads/register" className="w-full">
+            <button
+              className="w-full flex h-[36px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3"
+            >
+              <PencilSquareIcon className="h-6 mx-1 text-blue-600" />
+              工数登録
+            </button>
+          </Link>
         </li>)
       }
       { loginUser !== null && (
-        <li className="mb-2 flex flex-row items-center">
-          <ChartBarIcon className="h-6 mx-1 text-blue-600" />
-          <Link href="/workloads/show/own">登録情報一覧 (個人)</Link>
+        <li className="flex flex-row items-center">
+          <Link href="/workloads/show/own" className="w-full">
+            <button
+              className="w-full flex h-[36px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3"
+            >
+              <ChartBarIcon className="h-6 mx-1 text-blue-600" />
+              [TODO] 登録情報一覧
+            </button>
+          </Link>
         </li>)
       }
       { loginUser !== null && (
-        <li className="mb-2 flex flex-row items-center">
-          <ChartPieIcon className="h-6 mx-1 text-blue-600" />
-          <Link href="/workloads/show/team">登録情報一覧 (チーム)</Link>
+        <li className="mb-1 flex flex-row items-center">
+          <Link href="/workloads/show/team" className="w-full">
+            <button
+              className="w-full flex h-[36px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3"
+            >
+              <ChartPieIcon className="h-6 mx-1 text-blue-600" />
+              [TODO] チーム登録情報
+            </button>
+          </Link>
         </li>)
       }
     </ol>

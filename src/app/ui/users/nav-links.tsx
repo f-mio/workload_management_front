@@ -14,10 +14,15 @@ const UserNavLinks = memo(() => {
   return (
     <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
       { loginUser !== null && (
-        <li className="mb-2 flex flex-row items-center">
-          <UserCircleIcon className="h-6 mx-1 text-blue-600" />
-          {/* <Link href="/users/edit">登録情報修正</Link> */}
-          [TODO] 登録情報修正
+        <li className="mb-1 flex flex-row items-center">
+          <Link href="#">
+            <button
+              className="w-full flex h-[36px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3"
+            >
+              <UserCircleIcon className="h-6 mx-1 text-blue-600" />
+              [TODO] 登録情報修正
+            </button>
+          </Link>
         </li>)
       }
     </ol>
