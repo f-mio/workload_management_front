@@ -84,7 +84,7 @@ export async function apiFetchSpecifyWorkload(loginUser: User|null, targetDate: 
 };
 
 
-export async function postNewWorkload (stete: WorkloadFormState, formData: FormData) {
+export async function postNewWorkload (state: WorkloadFormState, formData: FormData) {
   // 必要なデータのみを抽出
   const validatedFields = WorkloadFormSchema.safeParse({
     subtask_id: Number(formData.get("subtask_id")),
@@ -132,9 +132,7 @@ export async function postNewWorkload (stete: WorkloadFormState, formData: FormD
         sameSite: "none",
         path: "/"
       });
-      redirect("/workload/register")
-    }
-  }
-  return null;
+    };
+  };
 }
 

@@ -1,4 +1,7 @@
+"use client"
+
 import { memo, useContext, useState, useActionState } from "react";
+import { redirect } from "next/navigation";
 // コンポーネント
 import { Subtask } from "@/app/lib/types/jiraContents";
 // 関数
@@ -6,7 +9,7 @@ import { UserContext } from "@/app/lib/contexts/UserContext";
 import { postNewWorkload, apiFetchSpecifyWorkload } from "@/app/api/workloads";
 // 型
 import { User } from "@/app/lib/types/users";
-import { redirect } from "next/navigation";
+import { WorkloadFormState } from "@/app/lib/types/workloads";
 
 
 const SubtaskSelector = memo(({subtasks, setWorkloads}: {subtasks: Subtask[]|null, setWorkloads: any}) => {
@@ -15,14 +18,33 @@ const SubtaskSelector = memo(({subtasks, setWorkloads}: {subtasks: Subtask[]|nul
   // ログインしていない場合はトップページにリダイレクト
   if (!loginUser) { redirect("/") };
 
-  const [state, action, pending] = useActionState(postNewWorkload, undefined)
   const [formData, setFormData] = useState({
     subtask_id: 0,
     user_id: loginUser ? loginUser.id : 0,
     work_date: new Date().toISOString().split('T')[0],
     workload_minute: 0,
     detail: ""
-  })
+  });
+
+
+  /**
+   * 工数登録ボタン押下後のアクション
+   * @param state 
+   * @param formData 
+   */
+  const postAction = async (state: WorkloadFormState, submitFormData: FormData) => {
+    const res = await postNewWorkload(state, submitFormData);
+    if (!res?.errors) {
+      // フォームの値を初期化
+      const newFormData = {...formData, workload_minute: 0, subtask_id: 0, detail: ""};
+      setFormData(newFormData);
+      const resWorkloads = await apiFetchSpecifyWorkload(loginUser, newFormData.work_date);
+      setWorkloads(resWorkloads);
+    };
+  };
+
+  const [state, action, pending] = useActionState(postAction, undefined);
+
   // フォーム内容の変更時のハンドラ
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({
