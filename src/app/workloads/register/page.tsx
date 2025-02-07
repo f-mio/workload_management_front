@@ -152,7 +152,7 @@ const RegisterWorkload = memo(() => {
 
   return (
     <div className="grid grid-rows-[10px_1fr_10px] items-start font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-start">
+      <main className="flex flex-col gap-2 row-start-2 items-start">
         <LoginUserBar loginUser={loginUser} />
         <PageTitle titleName="工数登録ページ" />
         <FilterForm

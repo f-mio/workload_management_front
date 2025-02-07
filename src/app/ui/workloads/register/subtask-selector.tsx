@@ -58,10 +58,10 @@ const SubtaskSelector = memo(({subtasks, setWorkloads}: {subtasks: Subtask[]|nul
   };
 
   return (
-    <div className="w-full pt-3">
+    <div className="w-full pt-1">
       <form action={action} className="w-full flex justify-center">
         <div className="w-5/6 flex flex-col">
-          <div className="w-full max-h-60 flex flex-row flex-wrap overflow-y-auto p-4 border-2 rounded-2xl">
+          <div className="w-full min-h-[150px] max-h-60 flex flex-row flex-wrap overflow-y-auto p-4 border-2 rounded-2xl">
             {subtasks?.map( subtask => (
               <div
                 className="w-1/3 py-1 flex flex-row"
@@ -110,14 +110,14 @@ const SubtaskSelector = memo(({subtasks, setWorkloads}: {subtasks: Subtask[]|nul
                 {state?.errors?.workload_minute && <p className="ms-2 w-60 text-red-600">{state.errors.workload_minute}</p>}
               </div>
             </div>
-            <div className="w-full mt-2 flex flex-col justify-start">
-              <label htmlFor="detail" className="w-1/4">詳細:</label>
+            <div className="w-full mt-2 flex flex-row items-center">
+              <label htmlFor="detail" className="w-12">詳細:　</label>
               <input
                 id="detail"
                 type="text"
                 name="detail"
                 placeholder="本日実施した作業内容を記入してください。"
-                className="mt-2 ms-12 w-5/6 h-auto"
+                className="w-5/6 h-auto ms-1"
                 value={formData.detail}
                 onChange={handleChange}
               />
@@ -135,7 +135,7 @@ const SubtaskSelector = memo(({subtasks, setWorkloads}: {subtasks: Subtask[]|nul
               />
             </div>
           </div>
-          <div className="w-full flex flex-row justify-center mt-3 mb-5">
+          <div className="w-full flex flex-row justify-center mt-3">
             <button
               type="submit"
               className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"

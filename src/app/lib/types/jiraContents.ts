@@ -12,6 +12,15 @@ export type Project = {
 };
 
 
+export type ProjectFromJira = {
+  id: number
+  name: string
+  jira_key: string
+  description: string
+  is_target: Boolean
+};
+
+
 export type Issue = {
   id: number
   name: string

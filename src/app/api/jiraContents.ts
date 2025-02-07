@@ -7,8 +7,7 @@ import { redirect } from "next/navigation";
 import apiServerInfo from "@/config/serverConfig";
 // 型
 import { User } from "@/app/lib/types/users";
-import { Project, Issue, Subtask } from "@/app/lib/types/jiraContents";
-
+import { Project, Issue, Subtask, ProjectFromJira } from "@/app/lib/types/jiraContents";
 
 /**
  * Jira最新情報を取得して、ローカルDBのprojectとissueを全更新するAPI
@@ -26,6 +25,16 @@ export async function apiUploadAllJiraContent() {
 }
 
 
+const apiPutProjectActivate = async (project: ProjectFromJira) => {
+  // エンドポイント
+  const endpoint = apiServerInfo["epPutProjectRoot"];
+  // エンドポイントへ投げるデータを作成
+  const requestData = {...project};
+  // エンドポイントへアクセス
+  await axios.put(endpoint, requestData)
+}
+
+
 /**
  * ローカルDBからProjectを取得するAPI
  * @param {null}
@@ -33,7 +42,29 @@ export async function apiUploadAllJiraContent() {
  */
 const apiFetchProjects = async(): Promise<Project[] | null> => {
   // エンドポイント
-  const endpoint = apiServerInfo["epGetProjects"];
+  const endpoint = apiServerInfo["epGetProjectsRoot"];
+  // エンドポイントからprojectを取得
+  const projects = await axios.get(endpoint)
+    .then(function (response) {
+      return response.data
+    })
+    .catch(error => {
+      console.log(error);
+      return null;
+    });
+
+  return projects
+};
+
+
+/**
+ * ローカルDBからProjectを取得するAPI
+ * @param {null}
+ * @returns {object} : projects
+ */
+const apiFetchAllProjects = async(): Promise<Project[] | null> => {
+  // エンドポイント
+  const endpoint = apiServerInfo["epGetProjectsRoot"];
   // エンドポイントからprojectを取得
   const projects = await axios.get(endpoint)
     .then(function (response) {
@@ -93,6 +124,8 @@ const apiFetchSubtasks = async(): Promise<Subtask[] | null> => {
 
 export {
   apiFetchProjects,
+  apiFetchAllProjects,
+  apiPutProjectActivate,
   apiFetchIssues, 
   apiFetchSubtasks
 };
