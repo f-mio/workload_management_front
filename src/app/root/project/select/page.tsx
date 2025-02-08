@@ -5,6 +5,8 @@ import { redirect } from "next/navigation";
 // コンポーネント
 import PageTitle from "@/app/ui/common/page-title";
 import LoginUserBar from "@/app/ui/common/login-user-bar";
+import Description from "@/app/ui/root/project/select/description";
+import ProjectTable from "@/app/ui/root/project/select/project_table";
 // メソッド
 import { apiFetchProjects, apiPutProjectActivate } from "@/app/api/jiraContents";
 import { UserContext } from "@/app/lib/contexts/UserContext";
@@ -27,15 +29,15 @@ const Home = memo(() => {
     setProjects(resProjects)
   };
 
-  async function onChangeChkbox(project: any) {
+  async function onChangeChkbox(checkedProject: any) {
     // APIへ送るデータを作成
-    const newProject = {...project, is_target: !project.is_target}
+    const newProject = {...checkedProject, is_target: !checkedProject.is_target}
     // 変更した際にDBに書き込みを実施
     await apiPutProjectActivate(newProject);
     // 変更のフロント側への反映
     const newProjects = projects ? [...projects] : [];
     setProjects( newProjects.map( p => {
-      return {...p, is_target: (p.id === project.id ? !p.is_target : p.is_target) }
+      return {...p, is_target: (p.id === checkedProject.id ? !p.is_target : p.is_target) }
     }) );
   };
 
@@ -49,16 +51,8 @@ const Home = memo(() => {
       <main className="flex flex-col gap-8 row-start-2 items-start">
         <LoginUserBar loginUser={loginUser} />
         <PageTitle titleName="Projectの使用・未使用 選択" />
-        {projects?.map(project => (
-          <div key={project.id}>
-            <input
-              type="checkbox" name={project.name}
-              onChange={ (e) => {onChangeChkbox(project)}}
-              checked={ project.is_target === true }
-            />
-            {project.id}、{project.name}
-          </div>
-        ))}
+        <Description />
+        <ProjectTable projects={projects} onChangeChkbox={onChangeChkbox} />
       </main>
     </div>
   );
