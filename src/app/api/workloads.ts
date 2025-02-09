@@ -46,14 +46,12 @@ export async function apiFetchUserWorkload(loginUser: User|null) {
 };
 
 
-export async function apiFetchSpecifyWorkload(loginUser: User|null, targetDate: string) {
-
+export async function apiFetchSpecifyWorkloads(loginUser: User|null, searchCondition: any) {
+  // ログインしていない場合はトップへリダイレクト
   if (loginUser == null) { redirect("/") };
 
   // エンドポイント
   const endpoint = `${apiServerInfo["epGetWorkloadsUseCondition"]}`;
-
-  const searchCondition = { specify_user_id: loginUser.id, target_date: targetDate}
   const response = await axios.post(
     endpoint, searchCondition,
     {
@@ -133,4 +131,3 @@ export async function postNewWorkload (state: WorkloadFormState, formData: FormD
     };
   };
 }
-

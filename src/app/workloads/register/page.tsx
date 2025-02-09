@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useContext, memo } from "react";
-import Link from "next/link"
+import { redirect } from "next/navigation";
 // コンポーネント
 import PageTitle from "@/app/ui/common/page-title";
 import LoginUserBar from "@/app/ui/common/login-user-bar";
@@ -10,21 +10,18 @@ import SubtaskSelector from "@/app/ui/workloads/register/subtask-selector";
 import WorkloadList from "@/app/ui/workloads/register/workload-list"; 
 import JiraUploadButton from "@/app/ui/workloads/jira-update-button";
 // 関数
-// import { apiFetchUsers } from "@/app/api/users";
 import { apiFetchIssues, apiFetchProjects, apiFetchSubtasks } from "@/app/api/jiraContents";
-import { apiFetchSpecifyWorkload } from "@/app/api/workloads";
+import { apiFetchSpecifyWorkloads } from "@/app/api/workloads";
 import { UserContext } from "@/app/lib/contexts/UserContext";
 // 型
 import { Project, Issue, Subtask } from "@/app/lib/types/jiraContents";
 import { User } from "@/app/lib/types/users";
 import { ResisteredWorkload } from "@/app/lib/types/workloads";
-import { redirect } from "next/navigation";
 
 
 /**
  * @returns {ReactDOM}
  */
-// export default function RegisterWorkload() {
 const RegisterWorkload = memo(() => {
     // ログイン状態の場合userDataを取得
   const loginUser = useContext<User>(UserContext);
@@ -35,7 +32,6 @@ const RegisterWorkload = memo(() => {
   const [projects, setProjects] = useState<Project[] | null>(null);
   const [issues, setIssues] = useState<Issue[] | null>(null);
   const [subtasks, setSubtasks] = useState<Subtask[] | null>(null);
-  // const [users, setUsers] = useState<User[] | null>(null);
   const [workloads, setWorkloads] = useState<ResisteredWorkload[] | null>(null);
   // issue種類
   const [epics, setEpics] = useState<Issue[] | null>(null);
@@ -50,15 +46,18 @@ const RegisterWorkload = memo(() => {
   const [filteredTasks, setFilteredTasks] = useState<Issue[] | null>(null);
   const [filteredSubtasks, setFilteredSubtasks] = useState<Subtask[] | null>(null);
 
-  // // フォーム内の値
-  // const [dateFormVal, setDateFormVal] = useState<string|null>(null);
-
   const epicName = "エピック",
     bugName = "バグ",
     storyName = "ストーリー",
     taskName = "タスク";
 
-  // TODO
+  async function fetchWorkloadsFromDb(targetDate: string) {
+    const searchCondition = { specify_user_id: loginUser?.id, target_date: targetDate};
+    const resWorkloads = await apiFetchSpecifyWorkloads(loginUser, searchCondition);
+    setWorkloads(resWorkloads);
+  };
+
+  // ページ読み込み時にAPIからフォームの値をセットする。
   useEffect(() => {
     const fetchSubtasks = async () => {
       // APIから情報を取得
@@ -90,8 +89,10 @@ const RegisterWorkload = memo(() => {
     };
     async function fetchTodayWorkloads() {
       const todayStr = new Date().toISOString().split('T')[0];
-      const resWorkloads = await apiFetchSpecifyWorkload(loginUser, todayStr);
-      setWorkloads(resWorkloads);
+      fetchWorkloadsFromDb(todayStr);
+      // const searchCondition = { specify_user_id: loginUser?.id, target_date: todayStr};
+      // const resWorkloads = await apiFetchSpecifyWorkloads(loginUser, searchCondition);
+      // setWorkloads(resWorkloads);
     }
     fetchSubtasks();
     fetchTodayWorkloads();
@@ -159,7 +160,7 @@ const RegisterWorkload = memo(() => {
           projects={projects} epics={filteredEpics} stories={filteredStories}
           bugs={filteredBugs} tasks={filteredTasks} eventFunc={filterValueChanged}
         />
-        <SubtaskSelector subtasks={filteredSubtasks} setWorkloads={setWorkloads} />
+        <SubtaskSelector subtasks={filteredSubtasks} fetchWorkloadsFromDb={fetchWorkloadsFromDb} />
         <WorkloadList workloads={workloads} />
         <JiraUploadButton />
       </main>

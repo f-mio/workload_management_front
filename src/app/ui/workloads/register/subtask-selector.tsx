@@ -6,13 +6,13 @@ import { redirect } from "next/navigation";
 import { Subtask } from "@/app/lib/types/jiraContents";
 // 関数
 import { UserContext } from "@/app/lib/contexts/UserContext";
-import { postNewWorkload, apiFetchSpecifyWorkload } from "@/app/api/workloads";
+import { postNewWorkload, apiFetchSpecifyWorkloads } from "@/app/api/workloads";
 // 型
 import { User } from "@/app/lib/types/users";
 import { WorkloadFormState } from "@/app/lib/types/workloads";
 
 
-const SubtaskSelector = memo(({subtasks, setWorkloads}: {subtasks: Subtask[]|null, setWorkloads: any}) => {
+const SubtaskSelector = memo(({subtasks, fetchWorkloadsFromDb}: {subtasks: Subtask[]|null, fetchWorkloadsFromDb: Function}) => {
   // ログインユーザ情報を取得
   const loginUser = useContext<User>(UserContext);
   // ログインしていない場合はトップページにリダイレクト
@@ -37,9 +37,7 @@ const SubtaskSelector = memo(({subtasks, setWorkloads}: {subtasks: Subtask[]|nul
     if (!res?.errors) {
       // フォームの値を初期化
       const newFormData = {...formData, workload_minute: 0, subtask_id: 0, detail: ""};
-      setFormData(newFormData);
-      const resWorkloads = await apiFetchSpecifyWorkload(loginUser, newFormData.work_date);
-      setWorkloads(resWorkloads);
+      fetchWorkloadsFromDb(newFormData.work_date);
     };
   };
 
@@ -52,8 +50,7 @@ const SubtaskSelector = memo(({subtasks, setWorkloads}: {subtasks: Subtask[]|nul
       [e.target.name]: e.target.value
     }));
     if (e.target.name == "work_date") {
-      const resWorkloads = await apiFetchSpecifyWorkload(loginUser, e.target.value);
-      setWorkloads(resWorkloads);
+      fetchWorkloadsFromDb(e.target.value);
     };
   };
 
