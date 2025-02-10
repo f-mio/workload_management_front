@@ -37,6 +37,8 @@ const SubtaskSelector = memo(({subtasks, fetchWorkloadsFromDb}: {subtasks: Subta
     if (!res?.errors) {
       // フォームの値を初期化
       const newFormData = {...formData, workload_minute: 0, subtask_id: 0, detail: ""};
+      setFormData(newFormData)
+      // Workloadリストの更新 (再取得)
       fetchWorkloadsFromDb(newFormData.work_date);
     };
   };

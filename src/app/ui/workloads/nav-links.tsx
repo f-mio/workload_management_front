@@ -3,7 +3,7 @@
 import { useContext, memo } from "react";
 import Link from "next/link"
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
-import { ChartBarIcon, ChartPieIcon } from "@heroicons/react/24/solid";
+import { ChartPieIcon, TableCellsIcon } from "@heroicons/react/24/solid";
 import { UserContext } from "@/app/lib/contexts/UserContext";
 import { User } from "@/app/lib/types/users";
 
@@ -32,7 +32,7 @@ const WorkloadNavLinks = memo(() => {
             <button
               className="w-full flex h-[36px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3"
             >
-              <ChartBarIcon className="h-6 mx-1 text-blue-600" />
+              <TableCellsIcon className="h-6 mx-1 text-blue-600" />
               [TODO] 登録情報一覧
             </button>
           </Link>

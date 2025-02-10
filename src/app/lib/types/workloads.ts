@@ -25,6 +25,31 @@ export type WorkloadFormState =
   | undefined;
 
 
+export const WorkloadPutFormSchema = z.object({
+  id: z
+    .number().int().gte(0),
+  subtask_id: z
+    .number().int().gte(0),
+  user_id: z
+    .number().int().gte(0),
+  work_date: z.string().date(),
+  workload_minute: z.number().gt(0),
+  detail: z.string().min(0)
+});
+  
+
+export type WorkloadPutFormState =   | {
+  errors?: {
+    id?: string[]
+    subtask_id?: string[]
+    user_id?: string[]
+    work_date?: string[]
+    workload_minute?: string[]
+    detail?: string[]
+  }
+} | undefined;
+
+
 export type ResisteredWorkload = {
   project_id: number
   project_name: string

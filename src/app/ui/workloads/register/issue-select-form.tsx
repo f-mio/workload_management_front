@@ -1,7 +1,7 @@
 import { memo } from "react";
 // コンポーネント
 import { Issue } from "@/app/lib/types/jiraContents";
-import { BoltIcon, BugAntIcon, CheckIcon } from "@heroicons/react/24/solid";
+import { BoltIcon, CheckIcon } from "@heroicons/react/24/solid";
 import { BookmarkIcon } from "@heroicons/react/24/outline";
 
 

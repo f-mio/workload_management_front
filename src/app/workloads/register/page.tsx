@@ -90,9 +90,6 @@ const RegisterWorkload = memo(() => {
     async function fetchTodayWorkloads() {
       const todayStr = new Date().toISOString().split('T')[0];
       fetchWorkloadsFromDb(todayStr);
-      // const searchCondition = { specify_user_id: loginUser?.id, target_date: todayStr};
-      // const resWorkloads = await apiFetchSpecifyWorkloads(loginUser, searchCondition);
-      // setWorkloads(resWorkloads);
     }
     fetchSubtasks();
     fetchTodayWorkloads();

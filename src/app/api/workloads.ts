@@ -7,7 +7,8 @@ import { redirect } from "next/navigation";
 import apiServerInfo from "@/config/serverConfig";
 // 型
 import { User } from "@/app/lib/types/users";
-import { WorkloadFormState, WorkloadFormSchema } from "@/app/lib/types/workloads";
+import { WorkloadFormState, WorkloadFormSchema,
+         WorkloadPutFormState, WorkloadPutFormSchema } from "@/app/lib/types/workloads";
 
 
 export async function apiFetchUserWorkload(loginUser: User|null) {
@@ -130,4 +131,62 @@ export async function postNewWorkload (state: WorkloadFormState, formData: FormD
       });
     };
   };
-}
+};
+
+
+
+export async function putWorkload (state: WorkloadPutFormState, formData: FormData) {
+  // 必要なデータのみを抽出
+  const validatedFields = WorkloadPutFormSchema.safeParse({
+    id: Number(formData.get("id")),
+    subtask_id: Number(formData.get("subtask_id")),
+    user_id: Number(formData.get("user_id")),
+    work_date: formData.get("work_date"),
+    workload_minute: Number(formData.get("workload_minute")),
+    detail: formData.get("detail")
+  });
+  // 上記で方が合わない場合はエラーメッセージを返却
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+    };
+  };
+
+  // APIサーバへサインアップ処理を送信
+  const workloadId = validatedFields.data.id;
+  const endpoint = `${apiServerInfo["epUpdateWorkload"]}/${workloadId}`;
+  const workloadData = validatedFields.data;
+  const response = await axios.put(
+      endpoint, workloadData,
+      {withCredentials: true})
+    .catch(function (error) {
+      console.log(error);
+      return null
+    });
+
+  // エラーが発生した場合、nullなので早期リターン
+  if (response === null) { return null };
+
+  // FastAPIからのCookieをブラウザに転送
+  const cookieStore = await cookies();
+  // Set-Cookieヘッダーからトークンを抽出
+  const setCookiesList = response.headers?.["set-cookie"];
+  if (setCookiesList) {
+    const setCookiesStr = setCookiesList.join();
+    // Bearer tokenの部分を抽出
+    const tokenMatch = setCookiesStr.match(/Bearer\s+([^"]+)/);
+    if (tokenMatch && tokenMatch[1]) {
+      const access_token = `"Bearer ${tokenMatch[1]}"`;
+      cookieStore.set({
+        name: "access_token",
+        value: access_token,
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        path: "/"
+      });
+    };
+  };
+};
+
+

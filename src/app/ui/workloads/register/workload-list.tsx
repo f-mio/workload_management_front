@@ -1,6 +1,8 @@
 import { PencilSquareIcon, XCircleIcon } from "@heroicons/react/24/solid";
 // 型
 import { ResisteredWorkload } from "@/app/lib/types/workloads"
+import EditWorkloadIcon from "@/app/ui/workloads/edit/edit-workload-icon";
+import RemoveWorkloadIcon from "@/app/ui/workloads/edit/remove-icon";
 
 
 const WorkloadList = ({workloads}: {workloads: ResisteredWorkload[]|null}) => {
@@ -24,8 +26,8 @@ const WorkloadList = ({workloads}: {workloads: ResisteredWorkload[]|null}) => {
             </div>
             <div className="ms-6 mt-2 flex flex-row">
               <div className="flex flex-row">
-                <PencilSquareIcon className="h-6 mx-1 text-blue-600" />
-                <XCircleIcon className="h-6 mx-1 text-red-600"/>
+                <EditWorkloadIcon id={load.workload_id} heightClass="h-6" />
+                <RemoveWorkloadIcon id={load.workload_id} heightClass="h-6" />
               </div>
               <div className="ms-2">
                 {load.detail} ({load.workload_minute}分)
