@@ -22,6 +22,7 @@ const apiServerInfo = {
   epGetSpeciryWorkload: process.env.ENDPOINT_GET_WL!,
   epPostWorkload: process.env.ENDPOINT_POST_WL!,
   epUpdateWorkload: process.env.ENDPOINT_PUT_WL!,
+  epDeleteWorkload: process.env.ENDPOINT_DEL_WL!,
   epGetWorkloadsUseCondition: process.env.ENDPOINT_GET_WORKLOADS_USING_CONDITION!,
   // 管理者機能用
   epGetProjectsRoot: process.env.ENDPOINT_GET_JIRA_PROJECTS_ROOT!,

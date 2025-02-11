@@ -14,8 +14,7 @@ export const getUser = async (): Promise<User | null> => {
       {
         withCredentials: true,
         headers: {
-          'Cookie': `access_token=${token}`,  // Cookieヘッダーを明示的に設定
-          'Authorization': token  // Bearer tokenを設定
+          'Cookie': `access_token=${token}`,
         }
       })
     .then(function (response) {

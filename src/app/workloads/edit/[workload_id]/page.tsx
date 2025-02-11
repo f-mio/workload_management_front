@@ -10,7 +10,7 @@ import WorkloadForm from "@/app/ui/workloads/edit/workload-form";
 import JiraUploadButton from "@/app/ui/workloads/jira-update-button";
 import BackButton from "@/app/ui/common/back-button";
 // メソッド
-import { putWorkload } from "@/app/api/workloads";
+import { putWorkload, deleteWorkload } from "@/app/api/workloads";
 // 型
 import { User } from "@/app/lib/types/users";
 import { ResisteredWorkload } from "@/app/lib/types/workloads";
@@ -60,6 +60,10 @@ const EditWorkload = memo( ({ params, }: { params: Promise<{ workload_id: string
   const putAction = async (state: WorkloadPutFormState, submitFormData: FormData) => {
     // 工数修正用のメソッドを実行
     const res = await putWorkload(state, submitFormData);
+
+    if (res?.statusCode && res.statusCode < 300) {
+      alert(res.data.message)
+    }
   };
 
   const [state, action, pending] = useActionState(putAction, undefined);
@@ -124,7 +128,7 @@ const EditWorkload = memo( ({ params, }: { params: Promise<{ workload_id: string
 
         <BackButton />
         <JiraUploadButton />
-        </main>
+      </main>
     </div>
   );
 });

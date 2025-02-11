@@ -32,8 +32,8 @@ const WorkloadList = memo(({workloads}: {workloads: ResisteredWorkload[]|null}) 
             </div>
             <div className="ms-6 mt-2 flex flex-row">
               <div className="flex flex-row">
-                <EditWorkloadIcon id={load.workload_id} heightClass="h-6" />
-                <RemoveWorkloadIcon id={load.workload_id} heightClass="h-6" />
+                <EditWorkloadIcon workloadId={load.workload_id} heightClass="h-6" />
+                <RemoveWorkloadIcon workloadId={load.workload_id} heightClass="h-6" />
               </div>
               <div className="ms-2">
                 {load.detail} ({load.workload_minute}分)

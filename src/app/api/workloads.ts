@@ -11,54 +11,24 @@ import { WorkloadFormState, WorkloadFormSchema,
          WorkloadPutFormState, WorkloadPutFormSchema } from "@/app/lib/types/workloads";
 
 
-export async function apiFetchUserWorkload(loginUser: User|null) {
-
-  if (loginUser == null) {
-    redirect("/");
-  }
-
-  // エンドポイント
-  const endpoint = `${apiServerInfo["epGetUserWorkloads"]}/${loginUser.id}`;
-
-  const response = await axios.get(
-    endpoint,
-    {
-      withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-    .then(function (response) {
-      return response.data
-    })
-    .catch(function (error) {
-      return error
-    });
-
-  // 200番を超えるステータスの場合エラーを出力
-  if (response.status >= 300) {
-    const errorMsg = response?.response?.data?.message
-    return  {
-        errors: {apiMessage: `${errorMsg}`},
-    };
-  };
-
-  return response
-};
-
-
 export async function apiFetchSpecifyWorkloads(loginUser: User|null, searchCondition: any) {
   // ログインしていない場合はトップへリダイレクト
   if (loginUser == null) { redirect("/") };
 
+  // cookieを取得
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('access_token')?.value;
+  if (!accessToken) { return; }
   // エンドポイント
   const endpoint = `${apiServerInfo["epGetWorkloadsUseCondition"]}`;
+  // APIへアクセス
   const response = await axios.post(
     endpoint, searchCondition,
     {
       withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
+        'Cookie': `access_token=${accessToken}`,
       }
     })
     .then(function (response) {
@@ -95,44 +65,37 @@ export async function postNewWorkload (state: WorkloadFormState, formData: FormD
     return {
       errors: validatedFields.error.flatten().fieldErrors,
     };
-  }
+  };
 
-  // APIサーバへサインアップ処理を送信
+  // cookieを取得
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('access_token')?.value;
+  if (!accessToken) { return; }
+  // エンドポイント取得
   const endpoint = apiServerInfo["epPostWorkload"];
+  // 送付データ取得
   const workloadData = validatedFields.data;
+  // APIへアクセス
   const response = await axios.post(
       endpoint, workloadData,
-      {withCredentials: true})
-    .catch(function (error) {
-      console.log(error);
-      return null
-    });
+      { withCredentials: true,
+        headers: {
+          'Cookie': `access_token=${accessToken}`,
+        }
+      })
+      .then( res => res)
+      .catch(function (error) {
+        console.log(error);
+        return null
+      });
 
   // エラーが発生した場合、nullなので早期リターン
   if (response === null) { return null };
 
-  // FastAPIからのCookieをブラウザに転送
-  const cookieStore = await cookies();
-  // Set-Cookieヘッダーからトークンを抽出
-  const setCookiesList = response.headers?.["set-cookie"];
-  if (setCookiesList) {
-    const setCookiesStr = setCookiesList.join();
-    // Bearer tokenの部分を抽出
-    const tokenMatch = setCookiesStr.match(/Bearer\s+([^"]+)/);
-    if (tokenMatch && tokenMatch[1]) {
-      const access_token = `"Bearer ${tokenMatch[1]}"`;
-      cookieStore.set({
-        name: "access_token",
-        value: access_token,
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
-        path: "/"
-      });
-    };
-  };
-};
+  const resData = {statusCode: response.status, data: response.data}
+  return resData
 
+};
 
 
 export async function putWorkload (state: WorkloadPutFormState, formData: FormData) {
@@ -154,11 +117,50 @@ export async function putWorkload (state: WorkloadPutFormState, formData: FormDa
 
   // APIサーバへサインアップ処理を送信
   const workloadId = validatedFields.data.id;
+
+  // cookieを取得
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('access_token')?.value;
+  if (!accessToken) { return; }
+
   const endpoint = `${apiServerInfo["epUpdateWorkload"]}/${workloadId}`;
   const workloadData = validatedFields.data;
   const response = await axios.put(
       endpoint, workloadData,
-      {withCredentials: true})
+      { withCredentials: true,
+        headers: {
+          'Cookie': `access_token=${accessToken}` }    
+      })
+      .then(res => res)
+      .catch(function (error) {
+        console.log(error);
+        return null
+      });
+
+  // エラーが発生した場合、nullなので早期リターン
+  if (response === null) { return null };
+
+  const resData = {statusCode: response.status, data: response.data}
+  return resData
+};
+
+
+export async function deleteWorkload(workloadId: number) {
+
+  // エンドポイントを取得
+  const endpoint = `${apiServerInfo["epDeleteWorkload"]}/${workloadId}`;
+  // cookieを取得
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('access_token')?.value;
+  if (!accessToken) { return; }
+  // APIへのアクセス
+  const response = await axios.delete(
+    endpoint,
+    { withCredentials: true,
+      headers: {
+        'Cookie': `access_token=${accessToken}` }
+    })
+    .then( res => res )
     .catch(function (error) {
       console.log(error);
       return null
@@ -167,26 +169,7 @@ export async function putWorkload (state: WorkloadPutFormState, formData: FormDa
   // エラーが発生した場合、nullなので早期リターン
   if (response === null) { return null };
 
-  // FastAPIからのCookieをブラウザに転送
-  const cookieStore = await cookies();
-  // Set-Cookieヘッダーからトークンを抽出
-  const setCookiesList = response.headers?.["set-cookie"];
-  if (setCookiesList) {
-    const setCookiesStr = setCookiesList.join();
-    // Bearer tokenの部分を抽出
-    const tokenMatch = setCookiesStr.match(/Bearer\s+([^"]+)/);
-    if (tokenMatch && tokenMatch[1]) {
-      const access_token = `"Bearer ${tokenMatch[1]}"`;
-      cookieStore.set({
-        name: "access_token",
-        value: access_token,
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
-        path: "/"
-      });
-    };
-  };
+  const resData = {status: response.status, data: response.data}
+
+  return resData
 };
-
-

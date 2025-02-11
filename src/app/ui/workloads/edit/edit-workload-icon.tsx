@@ -5,10 +5,10 @@ import Link from "next/link";
 import { PencilSquareIcon } from "@heroicons/react/24/solid";
 
 
-const EditWorkloadIcon = memo( ( {id, heightClass} : {id: number|string, heightClass: string}) => {
+const EditWorkloadIcon = memo( ( {workloadId, heightClass} : {workloadId: number|string, heightClass: string}) => {
   return (
     <Link
-      href={`/workloads/edit/${id}`}
+      href={`/workloads/edit/${workloadId}`}
       className={`${heightClass} mx-1`}
     >
       < PencilSquareIcon className="h-full text-blue-600" />

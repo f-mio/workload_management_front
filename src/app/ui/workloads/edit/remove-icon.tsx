@@ -2,12 +2,15 @@
 
 import { memo } from "react"
 import { XCircleIcon } from "@heroicons/react/24/solid";
+// メソッド
+import { deleteWorkload } from "@/app/api/workloads";
 
 
-const RemoveWorkloadIcon = memo( ( {id, heightClass} : {id: number|string, heightClass: string}) => {
+const RemoveWorkloadIcon = memo( ( {workloadId, heightClass} : {workloadId: number, heightClass: string}) => {
+
   return (
     <button
-      onClick={ () => {console.log(id)}}
+      onClick={ async () => { await deleteWorkload(workloadId)} }
       className={`${heightClass} mx-1`}
     >
       <XCircleIcon className="h-full text-red-600" />
