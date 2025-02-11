@@ -9,7 +9,7 @@ const WorkloadForm = memo(
   ) => {
 
   return (
-    <form action={action} className="w-full flex justify-center">
+    <form action={action} className="w-full ms-6 flex justify-start">
       <div className="w-5/6 flex flex-col">
         <div className="w-full flex flex-col">
           <div className="w-full flex flex-row mt-3">
@@ -19,7 +19,7 @@ const WorkloadForm = memo(
                 type="date"
                 id="work_date"
                 name="work_date"
-                className="w-2/3"
+                className="w-2/3 rounded-md"
                 value={formData.work_date}
                 onChange={handleChange}
               />
@@ -31,7 +31,7 @@ const WorkloadForm = memo(
                 type="number"
                 id="workload_minute"
                 name="workload_minute"
-                className="w-2/3"
+                className="w-2/3 rounded-md"
                 value={formData.workload_minute}
                 onChange={handleChange}
               />
@@ -45,7 +45,7 @@ const WorkloadForm = memo(
               type="text"
               name="detail"
               placeholder="本日実施した作業内容を記入してください。"
-              className="w-5/6 h-auto ms-1"
+              className="w-5/6 h-auto ms-1 rounded-md"
               value={formData.detail}
               onChange={handleChange}
             />
@@ -79,12 +79,12 @@ const WorkloadForm = memo(
             />
           </div>
         </div>
-        <div className="w-full flex flex-row justify-center mt-3">
+        <div className="w-full flex flex-row justify-start ms-6 mt-3">
           <button
             type="submit"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            className="ms-6 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
-            修正
+            登録工数の修正
           </button>
         </div>
       </div>

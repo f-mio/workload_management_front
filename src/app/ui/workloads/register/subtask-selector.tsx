@@ -90,7 +90,7 @@ const SubtaskSelector = memo(({subtasks, fetchWorkloadsFromDb}: {subtasks: Subta
                   type="date"
                   id="work_date"
                   name="work_date"
-                  className="w-2/3"
+                  className="w-2/3 rounded-md"
                   value={formData.work_date}
                   onChange={handleChange}
                 />
@@ -102,7 +102,7 @@ const SubtaskSelector = memo(({subtasks, fetchWorkloadsFromDb}: {subtasks: Subta
                   type="number"
                   id="workload_minute"
                   name="workload_minute"
-                  className="w-2/3"
+                  className="w-2/3 rounded-md"
                   value={formData.workload_minute}
                   onChange={handleChange}
                 />
@@ -116,7 +116,7 @@ const SubtaskSelector = memo(({subtasks, fetchWorkloadsFromDb}: {subtasks: Subta
                 type="text"
                 name="detail"
                 placeholder="本日実施した作業内容を記入してください。"
-                className="w-5/6 h-auto ms-1"
+                className="w-5/6 h-auto ms-1 rounded-md"
                 value={formData.detail}
                 onChange={handleChange}
               />

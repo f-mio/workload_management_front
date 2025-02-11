@@ -58,9 +58,8 @@ const EditWorkload = memo( ({ params, }: { params: Promise<{ workload_id: string
    * @param formData 
    */
   const putAction = async (state: WorkloadPutFormState, submitFormData: FormData) => {
+    // 工数修正用のメソッドを実行
     const res = await putWorkload(state, submitFormData);
-    // console.log(formData)
-    console.log(res)
   };
 
   const [state, action, pending] = useActionState(putAction, undefined);
@@ -109,7 +108,6 @@ const EditWorkload = memo( ({ params, }: { params: Promise<{ workload_id: string
         <PageTitle titleName={`工数編集ページ${workload ? ` (workload id: ${workload?.workload_id})`: ""}`} />
 
         <div className="w-full ms-5 mt-6 gap-4 flex flex-col items-start">
-          <h3 className="mt-2 text-2xl underline">Jira情報</h3>
           <div className="ms-6 mt-2 flex flex-col justify-start">
             <div className="flex w-full text-md">
               {workload?.project_name}
@@ -121,7 +119,6 @@ const EditWorkload = memo( ({ params, }: { params: Promise<{ workload_id: string
             </div>
           </div>
 
-          <h3 className="mt-3 text-2xl underline">登録工数情報</h3>
           <WorkloadForm state={state} action={action} formData={formData} handleChange={handleChange} />
         </div>
 

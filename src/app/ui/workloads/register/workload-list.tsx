@@ -1,17 +1,23 @@
-import { PencilSquareIcon, XCircleIcon } from "@heroicons/react/24/solid";
+"use client"
+
+import { memo } from "react";
+import { ClockIcon } from "@heroicons/react/24/outline";
 // 型
 import { ResisteredWorkload } from "@/app/lib/types/workloads"
 import EditWorkloadIcon from "@/app/ui/workloads/edit/edit-workload-icon";
 import RemoveWorkloadIcon from "@/app/ui/workloads/edit/remove-icon";
 
 
-const WorkloadList = ({workloads}: {workloads: ResisteredWorkload[]|null}) => {
+const WorkloadList = memo(({workloads}: {workloads: ResisteredWorkload[]|null}) => {
 
-  const minute = workloads ? workloads.reduce((acc, curr) => acc + curr.workload_minute, 0) : 0
+  const allWorkTimeMinute = workloads ? workloads.reduce((acc, curr) => acc + curr.workload_minute, 0) : 0;
+
   return (
     <div className="flex flex-col w-full ps-6">
-      <h3 className="w-full mb-1 text-2xl underline underline-offset-1">登録済み工数</h3>
-      <div className="w-full ms-6">登録工数合計: {minute}分</div>
+      <div className="w-full ms-6 flex items-center">
+        <ClockIcon className="h-8 text-gray-400" />
+        <span className="ms-1 text-gray-500 text-2xl font-bold">{allWorkTimeMinute}分</span>
+      </div>
       <div className="w-full mt-2 pb-2 flex flex-col border-2 rounded-xl ps-6">
         { ((workloads === null) || (workloads.length === 0)) && (
           <div className="ps-6 py-5 text-xl">指定日には登録された工数はありませんでした。</div>
@@ -38,6 +44,6 @@ const WorkloadList = ({workloads}: {workloads: ResisteredWorkload[]|null}) => {
       </div>
     </div>
   )
-};
+});
 
 export default WorkloadList

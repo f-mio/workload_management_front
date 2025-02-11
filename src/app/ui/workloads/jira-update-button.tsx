@@ -16,7 +16,9 @@ const JiraUploadButton = memo(() => {
   };
 
   return (
-    <div className="w-full flex flex-row my-4 justify-center">
+    <div
+      className="absolute right-3 bottom-3"
+    >
       <button
         className="flex w-48 h-[48px] grow items-center justify-center gap-2 rounded-md bg-red-200 p-3 font-medium hover:bg-red-400 hover:text-neutral-900 md:flex-none md:justify-center md:p-2 md:px-5"
         onClick={clickEvent}
