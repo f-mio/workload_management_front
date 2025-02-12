@@ -148,6 +148,7 @@ const RegisterWorkload = memo(() => {
     setFilteredSubtasks(newSubtasks);
   };
 
+
   return (
     <div className="grid grid-rows-[10px_1fr_10px] items-start font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-2 row-start-2 items-start">
@@ -158,7 +159,7 @@ const RegisterWorkload = memo(() => {
           bugs={filteredBugs} tasks={filteredTasks} eventFunc={filterValueChanged}
         />
         <SubtaskSelector subtasks={filteredSubtasks} fetchWorkloadsFromDb={fetchWorkloadsFromDb} />
-        <WorkloadList workloads={workloads} />
+        <WorkloadList workloads={workloads} setWorkloads={setWorkloads} />
         <JiraUploadButton />
       </main>
     </div>

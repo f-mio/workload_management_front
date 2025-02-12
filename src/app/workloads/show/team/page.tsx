@@ -11,12 +11,9 @@ import { User } from "@/app/lib/types/users";
 
 
 export default function ShowTeamWorkloads() {
-  // ログイン状態の場合userDataを取得
+  // ログイン状態を取得
   const loginUser = useContext<User>(UserContext);
-
-  if (!loginUser) {
-    redirect("/")
-  }
+  if (!loginUser) { redirect("/") }
 
   return (
     <>

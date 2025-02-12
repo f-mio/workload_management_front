@@ -41,7 +41,7 @@ export async function apiFetchSpecifyWorkloads(loginUser: User|null, searchCondi
 
   // 200番を超えるステータスの場合エラーを出力
   if (response.status >= 300) {
-    const errorMsg = response?.response?.data?.message
+    const errorMsg = response?.data?.message
     return  {
         errors: {apiMessage: `${errorMsg}`},
     };
@@ -92,7 +92,7 @@ export async function postNewWorkload (state: WorkloadFormState, formData: FormD
   // エラーが発生した場合、nullなので早期リターン
   if (response === null) { return null };
 
-  const resData = {statusCode: response.status, data: response.data}
+  const resData = {status: response.status, data: response.data}
   return resData
 
 };
@@ -140,7 +140,7 @@ export async function putWorkload (state: WorkloadPutFormState, formData: FormDa
   // エラーが発生した場合、nullなので早期リターン
   if (response === null) { return null };
 
-  const resData = {statusCode: response.status, data: response.data}
+  const resData = {status: response.status, data: response.data}
   return resData
 };
 

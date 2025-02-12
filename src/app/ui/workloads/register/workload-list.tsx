@@ -2,15 +2,24 @@
 
 import { memo } from "react";
 import { ClockIcon } from "@heroicons/react/24/outline";
+// メソッド
+import { deleteWorkload } from "@/app/api/workloads";
 // 型
 import { ResisteredWorkload } from "@/app/lib/types/workloads"
 import EditWorkloadIcon from "@/app/ui/workloads/edit/edit-workload-icon";
 import RemoveWorkloadIcon from "@/app/ui/workloads/edit/remove-icon";
 
 
-const WorkloadList = memo(({workloads}: {workloads: ResisteredWorkload[]|null}) => {
+const WorkloadList = memo(({workloads, setWorkloads}: {workloads: ResisteredWorkload[]|null, setWorkloads: Function}) => {
 
+  // 指定日の全工数を計算
   const allWorkTimeMinute = workloads ? workloads.reduce((acc, curr) => acc + curr.workload_minute, 0) : 0;
+
+  // 削除ボタン押下イベント
+  const onClickAdditional = (workloadId: number) => {
+    const newWorkloads = workloads?.filter(workload => workload.workload_id !== workloadId);
+    setWorkloads(newWorkloads);
+  }
 
   return (
     <div className="flex flex-col w-full ps-6">
@@ -33,7 +42,7 @@ const WorkloadList = memo(({workloads}: {workloads: ResisteredWorkload[]|null}) 
             <div className="ms-6 mt-2 flex flex-row">
               <div className="flex flex-row">
                 <EditWorkloadIcon workloadId={load.workload_id} heightClass="h-6" />
-                <RemoveWorkloadIcon workloadId={load.workload_id} heightClass="h-6" />
+                <RemoveWorkloadIcon workloadId={load.workload_id} heightClass="h-6" onClickAdditional={onClickAdditional} />
               </div>
               <div className="ms-2">
                 {load.detail} ({load.workload_minute}分)

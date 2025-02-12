@@ -1,13 +1,14 @@
 "use client"
 
 import { memo, useState, useContext, useEffect, useActionState } from "react";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 // コンポーネント
 import { UserContext } from "@/app/lib/contexts/UserContext";
 import PageTitle from "@/app/ui/common/page-title";
 import LoginUserBar from "@/app/ui/common/login-user-bar";
 import WorkloadForm from "@/app/ui/workloads/edit/workload-form";
 import JiraUploadButton from "@/app/ui/workloads/jira-update-button";
+import RemoveWorkloadButton from "@/app/ui/workloads/remove-button";
 import BackButton from "@/app/ui/common/back-button";
 // メソッド
 import { putWorkload, deleteWorkload } from "@/app/api/workloads";
@@ -25,6 +26,8 @@ const EditWorkload = memo( ({ params, }: { params: Promise<{ workload_id: string
   // ログイン状態でない場合はトップページにリダイレクト
   if (!loginUser) { redirect("/"); }
 
+  // routerの作成
+  const router = useRouter();
   // workloadとIDのstateを作成
   const [workloadId, setWorkloadId] = useState<number|null>(null);
   const [workload, setWorkload] = useState<ResisteredWorkload | null>();
@@ -61,11 +64,12 @@ const EditWorkload = memo( ({ params, }: { params: Promise<{ workload_id: string
     // 工数修正用のメソッドを実行
     const res = await putWorkload(state, submitFormData);
 
-    if (res?.statusCode && res.statusCode < 300) {
-      alert(res.data.message)
+    if (res && res?.status && res.status < 300) {
+      alert(res.data.message);
     }
   };
 
+  // ActionStateを作成
   const [state, action, pending] = useActionState(putAction, undefined);
 
 
@@ -104,12 +108,25 @@ const EditWorkload = memo( ({ params, }: { params: Promise<{ workload_id: string
     fetchSpecifyWorkload(params);
   }, [])
 
+  // 削除ボタン押下イベント
+  const onClickRemove = async () => {
+    // IDがない場合は何もしない
+    if (workloadId === null) {return}
+    // APIへアクセス
+    const res = await deleteWorkload(workloadId);
+    if ( res && res.status < 300 ) {
+      // メッセージを送信し、前のページへリダイレクト。
+      alert(res?.data?.message);
+      router.back();
+    }
+  }
 
   return (
     <div className="grid grid-rows-[10px_1fr_10px] items-start font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col row-start-2 items-start">
         <LoginUserBar loginUser={loginUser} />
         <PageTitle titleName={`工数編集ページ${workload ? ` (workload id: ${workload?.workload_id})`: ""}`} />
+
 
         <div className="w-full ms-5 mt-6 gap-4 flex flex-col items-start">
           <div className="ms-6 mt-2 flex flex-col justify-start">
@@ -124,9 +141,13 @@ const EditWorkload = memo( ({ params, }: { params: Promise<{ workload_id: string
           </div>
 
           <WorkloadForm state={state} action={action} formData={formData} handleChange={handleChange} />
-        </div>
 
-        <BackButton />
+          <div className="ms-6 mt-6 flex flex-row justify-between gap-28">
+            <BackButton />
+            <RemoveWorkloadButton clickEvent={onClickRemove} />
+          </div>
+
+        </div>
         <JiraUploadButton />
       </main>
     </div>

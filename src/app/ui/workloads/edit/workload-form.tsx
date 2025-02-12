@@ -1,6 +1,8 @@
 "use client"
 
-import { memo } from "react"
+import { memo } from "react";
+import { CheckIcon } from "@heroicons/react/24/outline";
+
 
 
 const WorkloadForm = memo(
@@ -84,7 +86,10 @@ const WorkloadForm = memo(
             type="submit"
             className="ms-6 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
-            登録工数の修正
+            <div className="flex flex-row justify-center items-center">
+              <CheckIcon className="h-6" />
+              <span className="ms-2">修正</span>
+            </div>
           </button>
         </div>
       </div>
