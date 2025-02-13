@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useContext, memo } from "react";
+import { useState, useEffect, useMemo, useContext, memo } from "react";
 import { redirect } from "next/navigation";
 // コンポーネント
 import PageTitle from "@/app/ui/common/page-title";

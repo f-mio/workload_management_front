@@ -1,6 +1,6 @@
 "use client"
 
-import { memo, useState, useContext, useEffect, useActionState } from "react";
+import { memo, useState, useContext, useEffect, useActionState, useMemo } from "react";
 import { redirect, useRouter } from "next/navigation";
 // コンポーネント
 import { UserContext } from "@/app/lib/contexts/UserContext";
@@ -63,15 +63,15 @@ const EditWorkload = memo( ({ params, }: { params: Promise<{ workload_id: string
   const putAction = async (state: WorkloadPutFormState, submitFormData: FormData) => {
     // 工数修正用のメソッドを実行
     const res = await putWorkload(state, submitFormData);
-
+    // 成功時にwindow alertにメッセージを表示
     if (res && res?.status && res.status < 300) {
       alert(res.data.message);
-    }
+      router.back();
+    };
   };
 
   // ActionStateを作成
   const [state, action, pending] = useActionState(putAction, undefined);
-
 
   // URLに含まれるIDからWorkloadを取得
   async function fetchSpecifyWorkload(params: Promise<{ workload_id: string }>) {
@@ -119,7 +119,10 @@ const EditWorkload = memo( ({ params, }: { params: Promise<{ workload_id: string
       alert(res?.data?.message);
       router.back();
     }
-  }
+  };
+
+  // 関数のメモ化
+  useMemo(onClickRemove, []);
 
   return (
     <div className="grid grid-rows-[10px_1fr_10px] items-start font-[family-name:var(--font-geist-sans)]">
