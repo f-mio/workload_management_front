@@ -45,7 +45,7 @@ const WorkloadNavLinks = memo(() => {
               className="w-full flex h-[36px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3"
             >
               <ChartPieIcon className="h-6 mx-1 text-blue-600" />
-              [TODO] チーム登録情報
+              [DOING] チーム登録情報
             </button>
           </Link>
         </li>)

@@ -47,7 +47,7 @@ export type WorkloadPutFormState =   | {
     workload_minute?: string[]
     detail?: string[]
   }
-} | undefined;
+};
 
 
 export type ResisteredWorkload = {
@@ -62,9 +62,24 @@ export type ResisteredWorkload = {
   workload_id: number
   user_id: number
   user_name: string
-  work_date: string | Date | null
+  // work_date: string | Date | null
+  work_date: string
   workload_minute: number
   detail: string
   update_timestamp: string | Date | null
   create_timestamp: string | Date | null
+};
+
+
+export type ThemeBarChartDataType = {
+  theme: string
+  workMonth: string
+  load: number
+};
+
+
+export type UserBarChartDataType = {
+  userName: string
+  workMonth: string
+  load: number
 };

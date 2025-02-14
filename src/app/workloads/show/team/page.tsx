@@ -7,13 +7,14 @@ import LoginUserBar from "@/app/ui/common/login-user-bar";
 import PageTitle from "@/app/ui/common/page-title";
 import JiraUploadButton from "@/app/ui/workloads/jira-update-button";
 import InputDateForm from "@/app/ui/common/input-date-form";
-import { ThemeStackedBarChart, } from "@/app/ui/workloads/show/stacked-bar-chart";
+import { ThemeStackedBarChart, UserStackedBarChart } from "@/app/ui/workloads/show/stacked-bar-chart";
 // 関数、コンテキスト
 import { UserContext } from "@/app/lib/contexts/UserContext";
 import { apiFetchSpecifyWorkloads } from "@/app/api/workloads";
 // 型
 import { User } from "@/app/lib/types/users";
-import { ResisteredWorkload } from "@/app/lib/types/workloads";
+import { ThemeBarChartDataType, UserBarChartDataType, 
+  ResisteredWorkload, } from "@/app/lib/types/workloads";
 import { Project } from "@/app/lib/types/jiraContents";
 
 
@@ -37,11 +38,11 @@ export default function ShowTeamWorkloads() {
   const [lowerDate, setLowerDate] = useState<string>(initLowerDate);
   const [upperDate, setUpperDate] = useState<string>(initUpperDate);
   const [projects, setProjects] = useState<Project[]|null>(null);
-  const [workloads, setWorkloads] = useState<ResisteredWorkload[]|null>(null);
+  const [workloads, setWorkloads] = useState<ResisteredWorkload[]>([]);
   // const [users, setUsers] = useState<User[]|null>(null);
   const [pieChartData, setPieChartData] = useState<object[]>([]);
-  const [themeStackBarChartData, setThemeStackBarChartData] = useState<object[]>([]);
-  const [userStackBarChartData, setUserStackBarChartData] = useState<object[]>([]);
+  const [themeStackBarChartData, setThemeStackBarChartData] = useState<ThemeBarChartDataType[]>([]);
+  const [userStackBarChartData, setUserStackBarChartData] = useState<UserBarChartDataType[]>([]);
   const [tableData, setTableData] = useState<object[]>([]);
   const [isUpdating, setIsUpdating ] = useState<boolean>(false);
 
@@ -63,11 +64,15 @@ export default function ShowTeamWorkloads() {
 
   // テーマ毎のスタックバーチャート用のフィルター用メソッド
   const filterDataForThemeBarChart = () => {
-    const newData = workloads?.map( w => {
+    if (!workloads || workloads.length === 0) {
+      setUserStackBarChartData([])
+      return
+    };
+    const newData: ThemeBarChartDataType[] = workloads.map( w => {
       return {
         // theme: `${w.issue_name_2} (${w.issue_name_1})`,
         theme: `${w.issue_name_1} (${w.project_name})`,
-        workMonth: (w.work_date)?.toString().substring(0,7),
+        workMonth: w.work_date.substring(0,7),
         load: w.workload_minute
       };
     });
@@ -76,8 +81,17 @@ export default function ShowTeamWorkloads() {
 
   // ユーザ毎のスタックバーチャート用のフィルター用メソッド
   const filterDataForUserBarChart = () => {
-    console.log("ユーザのstack bar chart用のフィルター")
-    // setUserStackBarChartData()
+    if (!workloads || workloads.length === 0) {
+      setUserStackBarChartData([])
+      return }
+    const newData: UserBarChartDataType[] = workloads.map( w => {
+      return {
+        userName: `${w.user_name}`,
+        workMonth: (w.work_date)?.toString().substring(0,7),
+        load: w.workload_minute
+      };
+    });
+    setUserStackBarChartData(newData)
   };
 
   // 表用のフィルター用メソッド
@@ -119,13 +133,14 @@ export default function ShowTeamWorkloads() {
           <InputDateForm formId={upperDateFormId} dateValue={upperDate} setStateFunc={setUpperDate} />
         </div>
 
-        <div className="w-full flex flex-row justify-center">
-          <div className="w-full">
+        {/* <div className="w-full flex flex-col justify-center items-center"> */}
+        <div className="w-full flex flex-row justify-center items-center">
+          <div className="w-1/2 flex flex-col items-start">
             <ThemeStackedBarChart chartTitle="テーマ別工数" workloadData={themeStackBarChartData} />
           </div>
-          {/* <div className="w-1/2">
+          <div className="w-1/2 flex flex-col items-start">
             <UserStackedBarChart chartTitle="ユーザ別工数" workloadData={userStackBarChartData} />
-          </div> */}
+          </div>
         </div>
         <JiraUploadButton />
       </main>
