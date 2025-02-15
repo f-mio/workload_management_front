@@ -71,14 +71,14 @@ export type ResisteredWorkload = {
 };
 
 
-export type ThemeBarChartDataType = {
+export type ThemeChartDataType = {
   theme: string
   workMonth: string
   load: number
 };
 
 
-export type UserBarChartDataType = {
+export type UserChartDataType = {
   userName: string
   workMonth: string
   load: number

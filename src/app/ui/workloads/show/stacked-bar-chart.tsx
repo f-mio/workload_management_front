@@ -1,11 +1,10 @@
 "use client"
 
-import { memo } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale,
     BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 // 型
-import { ThemeBarChartDataType, UserBarChartDataType } from '@/app/lib/types/workloads';
+import { ThemeChartDataType, UserChartDataType } from '@/app/lib/types/workloads';
 
 // Chart.jsの設定
 ChartJS.register(
@@ -25,7 +24,7 @@ type DatasetType = {
 }
 
 
-const ThemeStackedBarChart = ({chartTitle, workloadData}: {chartTitle: string, workloadData: ThemeBarChartDataType[]}) => {
+const ThemeStackedBarChart = ({workloadData}: {workloadData: ThemeChartDataType[]}) => {
 
   if (workloadData === null || workloadData.length === 0) {return null}
 
@@ -33,9 +32,11 @@ const ThemeStackedBarChart = ({chartTitle, workloadData}: {chartTitle: string, w
     monthSet = workloadData ? new Set(workloadData.map(w => w.workMonth)) : [],
     themes: string[] = [],
     months: string[] = [];
+  // 各集合から要素を取り出して、users, monthsに格納
   themeSet.forEach(theme => {themes.push(theme)});
-  themes.sort();
   monthSet.forEach(workMonth => {months?.push(workMonth)});
+  // 要素のソート
+  themes.sort();
   months.sort();
 
   const options = {
@@ -70,7 +71,7 @@ const ThemeStackedBarChart = ({chartTitle, workloadData}: {chartTitle: string, w
       })
       datasets.push({
         label: theme,
-        data: tmp,
+        data: [...tmp],
         backgroundColor: `hsl(${Math.floor(Math.random() * 360)}, 90%, 70%)`
       })
     })
@@ -82,20 +83,16 @@ const ThemeStackedBarChart = ({chartTitle, workloadData}: {chartTitle: string, w
   };
 
   return (
-    <div className="w-full">
-      <h3 className="w-full text-center">テーマ別工数</h3>
-      <Bar
-        options={options}
-        data={data}
-        className="w-full"
-      />
-    </div>
+    <Bar
+      options={options}
+      data={data}
+      className="w-full"
+    />
   );
 };
 
 
-const UserStackedBarChart = ({chartTitle, workloadData}: {chartTitle: string, workloadData: UserBarChartDataType[]}) => {
-  
+const UserStackedBarChart = ({workloadData}: {workloadData: UserChartDataType[]}) => {
 
   if (workloadData === null || workloadData.length === 0) {return null}
 
@@ -134,15 +131,15 @@ const UserStackedBarChart = ({chartTitle, workloadData}: {chartTitle: string, wo
   const datasets: DatasetType[] = []
 
   if (workloadData) {
-    users?.forEach(theme => {
+    users?.forEach(user => {
       let tmp: number[] = [];
       months.forEach( month => {
-        tmp.push(workloadData.map(w => (w.userName == theme && w.workMonth == month) ? w.load : 0)
+        tmp.push(workloadData.map(w => (w.userName == user && w.workMonth == month) ? w.load : 0)
                   .reduce( (sum, load)  => ( sum + load), 0) / 60);
       })
       datasets.push({
-        label: theme,
-        data: tmp,
+        label: user,
+        data: [...tmp],
         backgroundColor: `hsl(${Math.floor(Math.random() * 360)}, 90%, 70%)`
       })
     })
@@ -154,14 +151,11 @@ const UserStackedBarChart = ({chartTitle, workloadData}: {chartTitle: string, wo
   };
 
   return (
-    <div className="w-full">
-      <h3 className="w-full text-center">テーマ別工数</h3>
-      <Bar
-        options={options}
-        data={data}
-        className="w-full"
-      />
-    </div>
+    <Bar
+      options={options}
+      data={data}
+      className="w-full"
+    />
   );
 };
 
