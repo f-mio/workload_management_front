@@ -10,16 +10,6 @@ import { ThemeChartDataType, UserChartDataType } from "@/app/lib/types/workloads
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 
-
-type DatasetType = {
-  label: string | null | undefined
-  data: number[]
-  backgroundColor: string[]
-  borderColor: string[]
-  borderWidth: number
-}
-
-
 const backgroundColorTemplate = [
   'rgba(75, 192, 192, 0.2)',
   'rgba(255, 206, 86, 0.2)',
@@ -64,7 +54,7 @@ const ThemePieChart = ({workloadData}: {workloadData: ThemeChartDataType[]}) => 
     themes: string[] = [];
   themeSet.forEach(theme => {themes.push(theme)});
 
-  const datasets: DatasetType[] = [],
+  const datasets = [],
     backgroundColors: string[] = [],
     borderColors: string[] = [];
 
@@ -115,7 +105,7 @@ const UserPieChart = ({workloadData}: {workloadData: UserChartDataType[]}) => {
     userNames: string[] = [];
     userNameSet.forEach(userName => {userNames.push(userName)});
 
-  const datasets: DatasetType[] = [],
+  const datasets = [],
     backgroundColors: string[] = [],
     borderColors: string[] = [];
 
@@ -147,6 +137,7 @@ const UserPieChart = ({workloadData}: {workloadData: UserChartDataType[]}) => {
   }
 
   const data = {
+    type: "pie",
     labels: userNames,
     datasets: datasets
   }
