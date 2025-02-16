@@ -20,9 +20,38 @@ ChartJS.register(
 type DatasetType = {
   label: string
   data: number[]
-  backgroundColor: string
+  backgroundColor: string[]
 }
 
+
+const backgroundColorTemplate = [
+  'rgba(75, 192, 192, 0.2)',
+  'rgba(255, 206, 86, 0.2)',
+  'rgba(54, 162, 235, 0.2)',
+  'rgba(153, 102, 255, 0.2)',
+  'rgba(255, 159, 64, 0.2)',
+  'rgba(255, 99, 132, 0.2)',
+  // 'rgba(255, 99, 132, 0.2)',
+  // 'rgba(54, 162, 235, 0.2)',
+  // 'rgba(255, 206, 86, 0.2)',
+  // 'rgba(75, 192, 192, 0.2)',
+  // 'rgba(153, 102, 255, 0.2)',
+  // 'rgba(255, 159, 64, 0.2)'
+];
+// const borderColorTemplate = [
+//   'rgba(75, 192, 192, 1)',
+//   'rgba(255, 206, 86, 1)',
+//   'rgba(54, 162, 235, 1)',
+//   'rgba(153, 102, 255, 1)',
+//   'rgba(255, 159, 64, 1)',
+//   'rgba(255, 99, 132, 1)',
+//   // 'rgba(255, 99, 132, 1)',
+//   // 'rgba(54, 162, 235, 1)',
+//   // 'rgba(255, 206, 86, 1)',
+//   // 'rgba(75, 192, 192, 1)',
+//   // 'rgba(153, 102, 255, 1)',
+//   // 'rgba(255, 159, 64, 1)',
+// ];
 
 const ThemeStackedBarChart = ({workloadData}: {workloadData: ThemeChartDataType[]}) => {
 
@@ -63,19 +92,23 @@ const ThemeStackedBarChart = ({workloadData}: {workloadData: ThemeChartDataType[
   const datasets: DatasetType[] = []
 
   if (workloadData) {
+    let i = 0;
     themes?.forEach(theme => {
-      let tmp: number[] = [];
+      const themeLoad: number[] = [];
+      const backgroundColors: string[] = []
       months.forEach( month => {
-        tmp.push(workloadData.map(w => (w.theme == theme && w.workMonth == month) ? w.load : 0)
+        themeLoad.push(workloadData.map(w => (w.theme == theme && w.workMonth == month) ? w.load : 0)
                   .reduce( (sum, load)  => ( sum + load), 0) / 60);
+        backgroundColors.push(backgroundColorTemplate[i % backgroundColorTemplate.length]);
       })
       datasets.push({
         label: theme,
-        data: [...tmp],
-        backgroundColor: `hsl(${Math.floor(Math.random() * 360)}, 90%, 70%)`
+        data: [...themeLoad],
+        backgroundColor: backgroundColors,
       })
-    })
-  }
+      i += 1
+    });
+  };
 
   const data = {
     labels: months,
@@ -108,13 +141,7 @@ const UserStackedBarChart = ({workloadData}: {workloadData: UserChartDataType[]}
   months.sort();
 
   const options = {
-    plugins: {
-      // titleはH3要素で表示するためコメントアウト
-      // title: {
-      //   display: true,
-      //   text: chartTitle,
-      // },
-    },
+    plugins: {},
     responsive: true,
     scales: {
       x: { stacked: true },
@@ -128,20 +155,25 @@ const UserStackedBarChart = ({workloadData}: {workloadData: UserChartDataType[]}
     },
   };
 
+  // datasetsの初期化
   const datasets: DatasetType[] = []
 
   if (workloadData) {
+    let i: number = 0;
     users?.forEach(user => {
-      let tmp: number[] = [];
+      const userLoad: number[] = [];
+      const backgroundColors: string[] = [];
       months.forEach( month => {
-        tmp.push(workloadData.map(w => (w.userName == user && w.workMonth == month) ? w.load : 0)
+        userLoad.push(workloadData.map(w => (w.userName == user && w.workMonth == month) ? w.load : 0)
                   .reduce( (sum, load)  => ( sum + load), 0) / 60);
-      })
+        backgroundColors.push(backgroundColorTemplate[i % backgroundColorTemplate.length]);
+      });
       datasets.push({
         label: user,
-        data: [...tmp],
-        backgroundColor: `hsl(${Math.floor(Math.random() * 360)}, 90%, 70%)`
-      })
+        data: [...userLoad],
+        backgroundColor: backgroundColors,
+      });
+      i += 1;
     })
   }
 

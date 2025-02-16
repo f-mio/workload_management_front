@@ -8,7 +8,7 @@ import PageTitle from "@/app/ui/common/page-title";
 import JiraUploadButton from "@/app/ui/workloads/jira-update-button";
 import InputDateForm from "@/app/ui/common/input-date-form";
 import { ThemeStackedBarChart, UserStackedBarChart } from "@/app/ui/workloads/show/stacked-bar-chart";
-import { ThemePieChart } from "@/app/ui/workloads/show/pie-chart";
+import { ThemePieChart, UserPieChart } from "@/app/ui/workloads/show/pie-chart";
 // 関数、コンテキスト
 import { UserContext } from "@/app/lib/contexts/UserContext";
 import { apiFetchSpecifyWorkloads } from "@/app/api/workloads";
@@ -149,7 +149,7 @@ export default function ShowTeamWorkloads() {
           <div className="w-full mt-3 flex flex-row justify-center">
             <div className="w-1/3 flex flex-col items-start">
               {/* Pie Chart */}
-              {/* <ThemePieChart workloadData={themeChartData} /> */}
+              <UserPieChart workloadData={userChartData} />
             </div>
             <div className="w-2/3 flex flex-col items-start">
               {/* Stacked Bar Chart */}
