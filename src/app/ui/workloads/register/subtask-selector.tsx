@@ -3,7 +3,7 @@
 import { memo, useContext, useState, useActionState } from "react";
 import { redirect } from "next/navigation";
 // コンポーネント
-import { Subtask } from "@/app/lib/types/jiraContents";
+import { SubtaskWithParents } from "@/app/lib/types/jiraContents";
 // 関数
 import { UserContext } from "@/app/lib/contexts/UserContext";
 import { postNewWorkload, apiFetchSpecifyWorkloads } from "@/app/api/workloads";
@@ -12,7 +12,7 @@ import { User } from "@/app/lib/types/users";
 import { WorkloadFormState } from "@/app/lib/types/workloads";
 
 
-const SubtaskSelector = memo(({subtasks, fetchWorkloadsFromDb}: {subtasks: Subtask[]|null, fetchWorkloadsFromDb: Function}) => {
+const SubtaskSelector = memo(({subtasks, fetchWorkloadsFromDb}: {subtasks: SubtaskWithParents[]|null, fetchWorkloadsFromDb: Function}) => {
   // ログインユーザ情報を取得
   const loginUser = useContext<User>(UserContext);
   // ログインしていない場合はトップページにリダイレクト
@@ -64,18 +64,18 @@ const SubtaskSelector = memo(({subtasks, fetchWorkloadsFromDb}: {subtasks: Subta
             {subtasks?.map( subtask => (
               <div
                 className="w-1/3 py-1 flex flex-row"
-                key={`subtask-${subtask.id}`}
+                key={`subtask-${subtask.subtask_id}`}
               >
                 <input
                   type="radio"
-                  id={`subtask_choice_${subtask.id}`}
+                  id={`subtask_choice_${subtask.subtask_id}`}
                   name="subtask_id"
-                  value={subtask.id}
+                  value={subtask.subtask_id}
                   onChange={handleChange}
                 />
                 <div className="ps-2 text-wrap">
-                  <label htmlFor={`subtask_choice_${subtask.id}`}>
-                    {`[${subtask.status}] ${subtask.name}`}
+                  <label htmlFor={`subtask_choice_${subtask.subtask_id}`}>
+                    {`[${subtask.subtask_status}] ${subtask.subtask_name}`}
                   </label>
                 </div>
               </div>

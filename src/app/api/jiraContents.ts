@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import apiServerInfo from "@/config/serverConfig";
 // 型
 import { User } from "@/app/lib/types/users";
-import { Project, Issue, Subtask, ProjectFromJira } from "@/app/lib/types/jiraContents";
+import { Project, Issue, Subtask, ProjectFromJira, SubtaskWithParents } from "@/app/lib/types/jiraContents";
 
 /**
  * Jira最新情報を取得して、ローカルDBのprojectとissueを全更新するAPI
@@ -106,7 +106,7 @@ const apiFetchIssues = async(): Promise<Issue[] | null> => {
  * @param {null}
  * @returns {object} : subtasks
  */
-const apiFetchSubtasks = async(): Promise<Subtask[] | null> => {
+const apiFetchSubtasks = async(): Promise<SubtaskWithParents[] | null> => {
   // エンドポイント
   const endpoint = apiServerInfo["epGetSubtasks"];
   // エンドポイントからsubtaskを取得
@@ -121,6 +121,7 @@ const apiFetchSubtasks = async(): Promise<Subtask[] | null> => {
 
   return subtasks;
 };
+
 
 export {
   apiFetchProjects,

@@ -69,7 +69,7 @@ ENDPOINT_GET_ALL_USERS=${WORKLOAD_APP_API_SERVER}/api/user/active/all
 # JIRA情報取得
 ENDPOINT_GET_PROJECTS=${WORKLOAD_APP_API_SERVER}/api/project/db/all
 ENDPOINT_GET_ISSUES=${WORKLOAD_APP_API_SERVER}/api/issue/main-task/db/all
-ENDPOINT_GET_SUBTASKS=${WORKLOAD_APP_API_SERVER}/api/issue/subtask_with_path/db/all
+ENDPOINT_GET_SUBTASKS=${WORKLOAD_APP_API_SERVER}/api/issue/subtask_with_parents/db/all
 # 全更新機能用
 ENDPOINT_UPDATE_ALL_PROJECTS_AND_ISSUES=${WORKLOAD_APP_API_SERVER}/api/project/db/update/all
 # 工数関係

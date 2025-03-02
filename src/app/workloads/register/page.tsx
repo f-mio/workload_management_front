@@ -14,7 +14,7 @@ import { apiFetchIssues, apiFetchProjects, apiFetchSubtasks } from "@/app/api/ji
 import { apiFetchSpecifyWorkloads } from "@/app/api/workloads";
 import { UserContext } from "@/app/lib/contexts/UserContext";
 // 型
-import { Project, Issue, Subtask } from "@/app/lib/types/jiraContents";
+import { Project, Issue, SubtaskWithParents } from "@/app/lib/types/jiraContents";
 import { User } from "@/app/lib/types/users";
 import { ResisteredWorkload } from "@/app/lib/types/workloads";
 
@@ -31,7 +31,7 @@ const RegisterWorkload = memo(() => {
   // DBから取得する値 (マスタとして使用)
   const [projects, setProjects] = useState<Project[] | null>(null);
   const [issues, setIssues] = useState<Issue[] | null>(null);
-  const [subtasks, setSubtasks] = useState<Subtask[] | null>(null);
+  const [subtasks, setSubtasks] = useState<SubtaskWithParents[] | null>(null);
   const [workloads, setWorkloads] = useState<ResisteredWorkload[] | null>(null);
   // issue種類
   const [epics, setEpics] = useState<Issue[] | null>(null);
@@ -44,7 +44,7 @@ const RegisterWorkload = memo(() => {
   const [filteredStories, setFilteredStories] = useState<Issue[] | null>(null);
   const [filteredBugs, setFilteredBugs] = useState<Issue[] | null>(null);
   const [filteredTasks, setFilteredTasks] = useState<Issue[] | null>(null);
-  const [filteredSubtasks, setFilteredSubtasks] = useState<Subtask[] | null>(null);
+  const [filteredSubtasks, setFilteredSubtasks] = useState<SubtaskWithParents[] | null>(null);
 
   const epicName = "エピック",
     bugName = "バグ",
@@ -64,7 +64,6 @@ const RegisterWorkload = memo(() => {
       const resProjects = await apiFetchProjects();
       const resIssues = await apiFetchIssues();
       const resSubtasks = await apiFetchSubtasks();
-      // const resUsers = await apiFetchUsers();
       // issueをepic, story, bug, taskに振り分け
       const epics = resIssues?.filter( issue => issue?.type == epicName ) || null;
       const stories = resIssues?.filter( issue => issue?.type == storyName ) || null;
@@ -112,12 +111,13 @@ const RegisterWorkload = memo(() => {
     // ecpiフィルタ
     const epicSelect = document.querySelector<HTMLSelectElement>("#epic_select"),
       epicVal = epicSelect ? epicSelect.value : "0",
-      epicInfo = epics?.filter(item => (item.id === parseInt(epicVal) && (item.project_id == parseInt(projectVal) || parseInt(projectVal) === 0)));
-
-    if (epicInfo?.length == 0 ) {
-      if (epicSelect) {epicSelect.value = "0"};
-    } else if (epicVal !== "0") {
-      newSubtasks = newSubtasks.filter(item => item.path.includes(`${epicVal}>`));
+      existsSelectedEpic = (
+        epics?.filter(item => (
+          ( item.id === parseInt(epicVal) && (
+            item.project_id == parseInt(projectVal) || parseInt(projectVal) === 0))
+        )))?.length;
+    if ( existsSelectedEpic && parseInt(epicVal) !== 0 ) {
+      newSubtasks = newSubtasks.filter(item => item.issue_id_1 == parseInt(epicVal));
     };
 
     const storySelect = document.querySelector<HTMLSelectElement>("#story_select"),
@@ -126,25 +126,36 @@ const RegisterWorkload = memo(() => {
     const storyVal = storySelect ? storySelect.value : "0",
       bugVal = bugSelect ? bugSelect.value : "0",
       taskVal = taskSelect ? taskSelect.value : "0";
-    const storyInfo = stories?.filter(item => (item.id === parseInt(storyVal) && (item.project_id == parseInt(projectVal) || parseInt(projectVal) === 0))),
-      bugInfo = bugs?.filter(item => (item.id === parseInt(bugVal) && (item.project_id == parseInt(projectVal) || parseInt(projectVal) === 0))),
-      taskInfo = tasks?.filter(item => (item.id === parseInt(taskVal) && (item.project_id == parseInt(projectVal) || parseInt(projectVal) === 0)));
+    const existsSelectedStory = ( stories?.filter(item => (
+        ( item.id === parseInt(storyVal) && (
+          item.project_id == parseInt(projectVal) || parseInt(projectVal) === 0))
+      )))?.length,
+      existsSelectedBug = ( bugs?.filter(item => (
+        ( item.id === parseInt(bugVal) && (
+          item.project_id == parseInt(projectVal) || parseInt(projectVal) === 0))
+      )))?.length,
+      existsSelectedTask = ( tasks?.filter(item => (
+        ( item.id === parseInt(taskVal) && (
+          item.project_id == parseInt(projectVal) || parseInt(projectVal) === 0))
+      )))?.length;
 
-    if (storyInfo?.length == 0 ) {
-      if (storySelect) {storySelect.value = "0"};
-    } else if (storyVal !== "0") {
-      newSubtasks = newSubtasks.filter(item => item.path.includes(`${storyVal}>`));
+    // story, bug, taskのどれかで値が存在する場合にfilterする。そのための各IDを格納するリストを定義。
+    const issueList: number[] = [];
+    if ( existsSelectedStory && parseInt(storyVal) !== 0 ) {
+      issueList.push(parseInt(storyVal));
     };
-    if (bugInfo?.length == 0 ) {
-      if (bugSelect) {bugSelect.value = "0"};
-    } else if (bugVal !== "0") {
-      newSubtasks = newSubtasks.filter(item => item.path.includes(`${bugVal}>`));
+    if ( existsSelectedBug && parseInt(bugVal) !== 0 ) {
+      issueList.push(parseInt(bugVal));
     };
-    if (taskInfo?.length == 0 ) {
-      if (taskSelect) {taskSelect.value = "0"};
-    } else if (taskVal !== "0") {
-      newSubtasks = newSubtasks.filter(item => item.path.includes(`${taskVal}>`));
+    if ( existsSelectedTask && parseInt(taskVal) !== 0 ) {
+      issueList.push(parseInt(taskVal));
     };
+    // 条件を満たすものをfilterして得られたものを新しいsubtaskとする。
+    if ( issueList && newSubtasks && issueList.length !== 0 ) {
+      newSubtasks = newSubtasks.filter( subtask => issueList.includes(subtask.issue_id_2) )
+    }
+
+    // filter結果をstateに保存
     setFilteredSubtasks(newSubtasks);
   };
 
