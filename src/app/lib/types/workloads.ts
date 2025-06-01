@@ -62,7 +62,6 @@ export type ResisteredWorkload = {
   workload_id: number
   user_id: number
   user_name: string
-  // work_date: string | Date | null
   work_date: string
   workload_minute: number
   detail: string

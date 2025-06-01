@@ -42,8 +42,6 @@ export default function ShowTeamWorkloads() {
   const [workloads, setWorkloads] = useState<ResisteredWorkload[]>([]);
   // const [users, setUsers] = useState<User[]|null>(null);
   const [pieChartData, setPieChartData] = useState<ThemeChartDataType[]>([]);
-  // const [themeStackBarChartData, setThemeStackBarChartData] = useState<ThemeChartDataType[]>([]);
-  // const [userStackBarChartData, setUserStackBarChartData] = useState<UserChartDataType[]>([]);
   const [tableData, setTableData] = useState<object[]>([]);
   const [isUpdating, setIsUpdating ] = useState<boolean>(false);
   const [themeChartData, setThemeChartData] = useState<ThemeChartDataType[]>([]);
